@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Dining Cart | The Grand Aurelia</title>
+    <!-- Bootstrap 5.3 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <!-- Custom Stylesheet -->
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+    <!-- Public Navigation Bar -->
+    <nav class="public-navbar">
+        <div class="container d-flex align-items-center justify-content-between">
+            <a href="index.html" class="d-flex align-items-center gap-2 text-decoration-none text-white">
+                <i class="bi bi-stars text-gold fs-3"></i>
+                <div>
+                    <span class="font-heading fw-bold fs-4 text-white d-block" style="letter-spacing: 0.05em; line-height: 1;">THE GRAND AURELIA</span>
+                    <small class="text-gold" style="font-size: 0.65rem; letter-spacing: 0.15em;">HOTEL & FINE DINING</small>
+                </div>
+            </a>
+
+            <div class="d-none d-lg-flex align-items-center gap-1">
+                <a href="index.html" class="nav-link">Home</a>
+                <a href="menu.html" class="nav-link">Food Menu</a>
+                <a href="table-booking.html" class="nav-link">Reserve Table</a>
+                <a href="room-booking.html" class="nav-link">Luxury Suites</a>
+                <a href="orders.html" class="nav-link">Orders</a>
+            </div>
+
+            <div class="d-flex align-items-center gap-3">
+                <a href="cart.html" class="btn btn-gold btn-sm rounded-pill px-3 py-1 d-flex align-items-center gap-2">
+                    <i class="bi bi-bag-fill"></i>
+                    <span>Cart</span>
+                    <span class="cart-badge badge rounded-pill bg-dark text-white" style="font-size: 0.72rem; display: none;">0</span>
+                </a>
+                <div class="user-profile-widget"></div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Cart Container -->
+    <main class="py-5">
+        <div class="container">
+            <div class="d-flex justify-content-between align-items-center mb-4 pb-2 border-bottom">
+                <div>
+                    <h2 class="font-heading fw-bold text-navy mb-0">Your Dining Cart</h2>
+                    <p class="text-muted small mb-0">Review selected dishes before proceeding to secure checkout.</p>
+                </div>
+                <a href="menu.html" class="btn btn-outline-secondary btn-sm">
+                    <i class="bi bi-arrow-left me-1"></i>Continue Ordering
+                </a>
+            </div>
+
+            <!-- Content Area: Either items list or empty state -->
+            <div id="cartContentWrapper">
+                <!-- Populated dynamically via JS -->
+            </div>
+        </div>
+    </main>
+
+    <!-- Bootstrap 5 JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- App Modules -->
+    <script src="js/storage.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/app.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            renderCartPage();
+        });
+
+        function renderCartPage() {
+            const container = document.getElementById('cartContentWrapper');
+            const cart = StorageService.getCart();
+
+            if (cart.length === 0) {
+                container.innerHTML = `
+                    <div class="text-center py-5 card-hotel p-5 bg-white border">
+                        <i class="bi bi-bag-x text-muted display-3 mb-3 d-block"></i>
+                        <h4 class="font-heading fw-bold text-navy mb-2">Your Dining Cart is Empty</h4>
+                        <p class="text-muted small mb-4">You have not added any artisanal dishes to your order yet.</p>
+                        <div>
+                            <a href="menu.html" class="btn btn-gold px-4 py-2">
+                                <i class="bi bi-cup-straw me-1"></i>Explore Food Menu
+                            </a>
+                        </div>
+                    </div>
+                `;
+                return;
+            }
+
+            const totals = StorageService.getCartTotals();
+
+            let itemsHtml = '';
+            cart.forEach(item => {
+                itemsHtml += `
+                    <div class="p-3 border-bottom d-flex flex-column flex-sm-row justify-content-between align-items-sm-center gap-2">
+                        <div class="d-flex align-items-center gap-3">
+                            <img src="${item.image}" width="60" height="60" class="rounded-3 shadow-sm flex-shrink-0" style="object-fit:cover;">
+                            <div class="min-w-0">
+                                <span class="badge ${item.isVeg ? 'bg-success' : 'bg-danger'} mb-1" style="font-size:0.65rem;">
+                                    ${item.isVeg ? 'Pure Veg' : 'Non-Veg'}
+                                </span>
+                                <h6 class="fw-bold font-heading text-navy mb-0 text-truncate" style="max-width: 220px;">${item.name}</h6>
+                                <small class="text-muted">${App.formatCurrency(item.price)} each</small>
+                            </div>
+                        </div>
+
+                        <div class="d-flex align-items-center justify-content-between justify-content-sm-end gap-3 w-100 w-sm-auto pt-2 pt-sm-0 border-top border-sm-0">
+                            <!-- Quantity selector -->
+                            <div class="qty-control">
+                                <button class="qty-btn" type="button" onclick="changeQuantity('${item.id}', ${item.quantity - 1})">-</button>
+                                <input type="text" class="qty-input" value="${item.quantity}" readonly>
+                                <button class="qty-btn" type="button" onclick="changeQuantity('${item.id}', ${item.quantity + 1})">+</button>
+                            </div>
+
+                            <div class="text-end" style="min-width: 70px;">
+                                <div class="fw-bold text-navy">${App.formatCurrency(item.subtotal)}</div>
+                            </div>
+
+                            <button class="btn btn-sm btn-outline-danger" onclick="removeItem('${item.id}')" title="Remove Item">
+                                <i class="bi bi-trash"></i>
+                            </button>
+                        </div>
+                    </div>
+                `;
+            });
+
+            container.innerHTML = `
+                <div class="row g-4">
+                    <!-- Items Column -->
+                    <div class="col-lg-8">
+                        <div class="card-hotel p-4 bg-white border">
+                            <div class="d-flex justify-content-between align-items-center pb-3 border-bottom mb-2">
+                                <h5 class="font-heading fw-bold text-navy mb-0">Order Items (${totals.itemCount})</h5>
+                                <button class="btn btn-sm btn-outline-danger" onclick="clearCart()">
+                                    <i class="bi bi-trash3 me-1"></i>Clear Cart
+                                </button>
+                            </div>
+
+                            <div class="d-flex flex-column">
+                                ${itemsHtml}
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Summary & Checkout Column -->
+                    <div class="col-lg-4">
+                        <div class="card-hotel p-4 bg-white border sticky-top" style="top: 90px;">
+                            <h5 class="font-heading fw-bold text-navy mb-3">Order Calculation</h5>
+                            
+                            <div class="d-flex justify-content-between text-muted small mb-2">
+                                <span>Item Subtotal:</span>
+                                <span class="fw-semibold text-dark">${App.formatCurrency(totals.subtotal)}</span>
+                            </div>
+                            <div class="d-flex justify-content-between text-muted small mb-2">
+                                <span>Hospitality Tax (${totals.taxRate}%):</span>
+                                <span class="fw-semibold text-dark">${App.formatCurrency(totals.tax)}</span>
+                            </div>
+                            <div class="d-flex justify-content-between text-muted small mb-3">
+                                <span>Estimated Delivery / Service:</span>
+                                <span class="text-success fw-semibold">Complimentary</span>
+                            </div>
+
+                            <div class="border-top pt-3 mb-4 d-flex justify-content-between align-items-center">
+                                <span class="fs-5 fw-bold text-navy font-heading">Total Payable:</span>
+                                <span class="fs-4 fw-bold text-gold">${App.formatCurrency(totals.total)}</span>
+                            </div>
+
+                            <div class="d-grid gap-2">
+                                <a href="checkout.html" class="btn btn-gold py-2 fs-6 fw-semibold">
+                                    <i class="bi bi-shield-check me-1"></i>Proceed to Checkout
+                                </a>
+                                <a href="menu.html" class="btn btn-outline-secondary btn-sm">
+                                    Add More Dishes
+                                </a>
+                            </div>
+
+                            <div class="mt-4 pt-3 border-top small text-muted text-center">
+                                <i class="bi bi-patch-check-fill text-gold me-1"></i>
+                                Freshly prepared upon order confirmation.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function changeQuantity(itemId, newQty) {
+            const res = StorageService.updateCartQuantity(itemId, newQty);
+            if (res && res.success === false) {
+                App.showToast(res.message, 'error');
+            } else {
+                renderCartPage();
+                App.updateCartBadge();
+            }
+        }
+
+        function removeItem(itemId) {
+            StorageService.removeFromCart(itemId);
+            App.showToast('Item removed from cart.', 'info');
+            renderCartPage();
+            App.updateCartBadge();
+        }
+
+        function clearCart() {
+            if (confirm('Are you sure you want to clear your cart?')) {
+                StorageService.clearCart();
+                App.showToast('Cart cleared.', 'info');
+                renderCartPage();
+                App.updateCartBadge();
+            }
+        }
+    </script>
+</body>
+</html>

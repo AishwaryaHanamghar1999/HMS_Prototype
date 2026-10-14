@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menu & Stock Inventory | The Grand Aurelia</title>
+    <!-- Bootstrap 5.3 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <!-- Custom Stylesheet -->
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+    <div class="dashboard-wrapper">
+        <aside class="dashboard-sidebar">
+            <a href="index.html" class="sidebar-brand">
+                <i class="bi bi-stars text-gold fs-4"></i>
+                <div>
+                    <span class="font-heading fw-bold fs-6 text-white d-block" style="letter-spacing: 0.05em;">THE GRAND AURELIA</span>
+                    <small class="text-gold" style="font-size: 0.65rem; letter-spacing: 0.1em;">MENU & INVENTORY</small>
+                </div>
+            </a>
+            <nav class="sidebar-nav" id="sidebarNavContainer"></nav>
+            <div class="sidebar-footer">
+                <button class="btn btn-sm btn-outline-danger w-100" onclick="AuthService.logout()">
+                    <i class="bi bi-box-arrow-right me-1"></i>Sign Out
+                </button>
+            </div>
+        </aside>
+
+        <main class="dashboard-main">
+            <header class="dashboard-topbar">
+                <div>
+                    <h4 class="font-heading fw-bold text-navy mb-0">Menu Inventory & Kitchen Stock</h4>
+                    <small class="text-muted d-none d-sm-block">Stock levels automatically decrement upon confirmed food orders</small>
+                </div>
+
+                <div class="d-flex align-items-center gap-2">
+                    <button class="btn btn-gold btn-sm" onclick="DashboardModule.openAddMenuModal()">
+                        <i class="bi bi-plus-lg"></i><span class="d-none d-sm-inline ms-1">Add Dish</span>
+                    </button>
+                    <div class="user-profile-widget"></div>
+                </div>
+            </header>
+
+            <div class="dashboard-content">
+                
+                <!-- Stock Summary KPI Cards -->
+                <div class="row g-3 mb-4">
+                    <div class="col-12 col-sm-4">
+                        <div class="stat-card">
+                            <span class="text-muted small fw-semibold">Total Menu Offerings</span>
+                            <h3 class="fw-bold text-navy font-heading mt-1" id="statTotalDishes">8</h3>
+                            <small class="text-muted">Across all culinary courses</small>
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-4">
+                        <div class="stat-card">
+                            <span class="text-muted small fw-semibold">Low-Stock Warnings (&le; 5 units)</span>
+                            <h3 class="fw-bold text-warning-emphasis font-heading mt-1" id="statLowStockDishes">1</h3>
+                            <small class="text-warning">Re-order ingredients recommended</small>
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-4">
+                        <div class="stat-card">
+                            <span class="text-muted small fw-semibold">Sold Out / Depleted</span>
+                            <h3 class="fw-bold text-danger font-heading mt-1" id="statSoldOutDishes">0</h3>
+                            <small class="text-muted">Automatically flagged unavailable</small>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Desktop Inventory Table -->
+                <div class="d-none d-md-block">
+                    <div class="card-hotel p-0 bg-white border overflow-hidden mb-4">
+                        <div class="table-responsive">
+                            <table class="table table-hover align-middle mb-0">
+                                <thead class="table-light small">
+                                    <tr>
+                                        <th>Dish Description</th>
+                                        <th>Category</th>
+                                        <th>Dietary</th>
+                                        <th>Price ($)</th>
+                                        <th>Stock Level</th>
+                                        <th>Service Availability</th>
+                                        <th class="text-end">Stock Adjust</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="inventoryTableBody">
+                                    <!-- Populated dynamically by script -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Mobile Responsive Inventory List -->
+                <div class="d-md-none mb-4" id="inventoryMobileList">
+                    <!-- Populated dynamically by script -->
+                </div>
+
+            </div>
+        </main>
+    </div>
+
+    <!-- Edit Stock & Price Modal -->
+    <div class="modal fade" id="editItemModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content rounded-4 border-0 shadow">
+                <div class="modal-header bg-navy-primary text-white">
+                    <h5 class="modal-title font-heading text-white mb-0">Edit Culinary Item</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body p-4">
+                    <form id="editItemForm" onsubmit="event.preventDefault(); saveItemEdit();">
+                        <input type="hidden" id="editItemId">
+                        <div class="mb-2">
+                            <label class="form-label small fw-semibold">Dish Title *</label>
+                            <input type="text" class="form-control form-control-sm" id="editItemName" required>
+                        </div>
+                        <div class="row g-2 mb-2">
+                            <div class="col-6">
+                                <label class="form-label small fw-semibold">Category</label>
+                                <select class="form-select form-select-sm" id="editItemCategory">
+                                    <option>Starters</option>
+                                    <option>Main Course</option>
+                                    <option>Snacks</option>
+                                    <option>Beverages</option>
+                                    <option>Desserts</option>
+                                </select>
+                            </div>
+                            <div class="col-6">
+                                <label class="form-label small fw-semibold">Price ($) *</label>
+                                <input type="number" step="0.5" class="form-control form-control-sm" id="editItemPrice" required>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label small fw-semibold">Inventory Stock Units *</label>
+                            <input type="number" class="form-control form-control-sm" id="editItemStock" min="0" required>
+                            <div class="form-text small">Setting stock to 0 automatically marks the item Sold Out.</div>
+                        </div>
+                        <div class="d-flex justify-content-between">
+                            <button type="button" class="btn btn-outline-danger btn-sm" onclick="deleteMenuItem()">Delete Item</button>
+                            <div class="d-flex gap-2">
+                                <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">Cancel</button>
+                                <button type="submit" class="btn btn-gold btn-sm px-3">Save Changes</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap 5 JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- App Modules -->
+    <script src="js/storage.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/dashboard.js"></script>
+    <script src="js/app.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Authorized roles: Admin, Manager
+            if (AuthService.requireAuth(['Admin', 'Manager'])) {
+                renderInventoryTable();
+            }
+        });
+
+        function renderInventoryTable() {
+            const menu = StorageService.get(STORAGE_KEYS.MENU, []);
+            const tbody = document.getElementById('inventoryTableBody');
+            const mobileContainer = document.getElementById('inventoryMobileList');
+
+            let totalDishes = menu.length;
+            let lowStockCount = 0;
+            let soldOutCount = 0;
+
+            let tableHtml = '';
+            let cardsHtml = '';
+
+            menu.forEach(item => {
+                const isLow = item.stock > 0 && item.stock <= 5;
+                const isOut = item.stock <= 0;
+
+                if (isLow) lowStockCount++;
+                if (isOut) soldOutCount++;
+
+                const stockBadge = isOut 
+                    ? '<span class="badge bg-danger">0 (Depleted)</span>' 
+                    : isLow 
+                        ? `<span class="badge bg-warning text-dark"><i class="bi bi-exclamation-triangle-fill me-1"></i>Low: ${item.stock} left</span>`
+                        : `<span class="badge bg-navy-surface text-white">${item.stock} units</span>`;
+
+                // Desktop Row
+                tableHtml += `
+                    <tr>
+                        <td>
+                            <div class="d-flex align-items-center gap-3">
+                                <img src="${item.image}" width="48" height="48" class="rounded-3 shadow-sm" style="object-fit:cover;">
+                                <div>
+                                    <div class="fw-semibold text-dark">${item.name}</div>
+                                    <small class="text-muted d-block text-truncate" style="max-width:240px;">${item.description || ''}</small>
+                                </div>
+                            </div>
+                        </td>
+                        <td><span class="badge bg-light text-dark border">${item.category}</span></td>
+                        <td>
+                            <span class="badge ${item.isVeg ? 'bg-success-subtle text-success border border-success-subtle' : 'bg-danger-subtle text-danger border border-danger-subtle'}">
+                                ${item.isVeg ? 'Vegetarian' : 'Non-Veg'}
+                            </span>
+                        </td>
+                        <td class="fw-bold text-navy">${App.formatCurrency(item.price)}</td>
+                        <td>${stockBadge}</td>
+                        <td>
+                            <div class="form-check form-switch mb-0">
+                                <input class="form-check-input" type="checkbox" role="switch" id="inv_toggle_${item.id}" ${item.available && item.stock > 0 ? 'checked' : ''} onchange="toggleItemAvailability('${item.id}', this.checked)">
+                                <label class="form-check-label small" for="inv_toggle_${item.id}">${item.available && item.stock > 0 ? 'Active' : 'Disabled'}</label>
+                            </div>
+                        </td>
+                        <td class="text-end">
+                            <div class="d-inline-flex gap-1">
+                                <button class="btn btn-sm btn-outline-secondary py-1" onclick="quickStockChange('${item.id}', 5)" title="Add +5 Stock">+5</button>
+                                <button class="btn btn-sm btn-outline-secondary py-1" onclick="openEditItemModal('${item.id}')">
+                                    <i class="bi bi-pencil"></i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+
+                // Mobile Card
+                cardsHtml += `
+                    <div class="mobile-record-card">
+                        <div class="d-flex align-items-center justify-content-between mb-2 pb-2 border-bottom">
+                            <div class="d-flex align-items-center gap-2">
+                                <img src="${item.image}" width="44" height="44" class="rounded-3" style="object-fit:cover;">
+                                <div>
+                                    <div class="fw-bold text-dark small">${item.name}</div>
+                                    <div class="d-flex gap-1 align-items-center">
+                                        <span class="badge bg-light text-dark border" style="font-size:0.65rem;">${item.category}</span>
+                                        <span class="badge ${item.isVeg ? 'bg-success' : 'bg-danger'}" style="font-size:0.6rem;">${item.isVeg ? 'Veg' : 'Non-Veg'}</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div>${stockBadge}</div>
+                        </div>
+
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <div>
+                                <span class="fw-bold text-navy fs-6">${App.formatCurrency(item.price)}</span>
+                                <small class="text-muted d-block" style="font-size:0.75rem;">Current Stock: ${item.stock} units</small>
+                            </div>
+                            <div class="form-check form-switch mb-0">
+                                <input class="form-check-input" type="checkbox" role="switch" id="mob_inv_toggle_${item.id}" ${item.available && item.stock > 0 ? 'checked' : ''} onchange="toggleItemAvailability('${item.id}', this.checked)">
+                                <label class="form-check-label small" for="mob_inv_toggle_${item.id}">${item.available && item.stock > 0 ? 'Active' : 'Off'}</label>
+                            </div>
+                        </div>
+
+                        <div class="d-flex justify-content-between align-items-center pt-2 border-top">
+                            <button class="btn btn-sm btn-outline-secondary" onclick="quickStockChange('${item.id}', 5)">
+                                <i class="bi bi-plus-lg me-1"></i>+5 Restock
+                            </button>
+                            <button class="btn btn-sm btn-gold" onclick="openEditItemModal('${item.id}')">
+                                <i class="bi bi-pencil me-1"></i>Edit Dish
+                            </button>
+                        </div>
+                    </div>
+                `;
+            });
+
+            if (tbody) tbody.innerHTML = tableHtml;
+            if (mobileContainer) mobileContainer.innerHTML = cardsHtml;
+            document.getElementById('statTotalDishes').textContent = totalDishes;
+            document.getElementById('statLowStockDishes').textContent = lowStockCount;
+            document.getElementById('statSoldOutDishes').textContent = soldOutCount;
+        }
+
+        function toggleItemAvailability(itemId, isChecked) {
+            const menu = StorageService.get(STORAGE_KEYS.MENU, []);
+            const idx = menu.findIndex(m => m.id === itemId);
+            if (idx > -1) {
+                menu[idx].available = isChecked;
+                StorageService.set(STORAGE_KEYS.MENU, menu);
+                App.showToast(`"${menu[idx].name}" set to ${isChecked ? 'Available' : 'Unavailable'}.`, 'info');
+                renderInventoryTable();
+            }
+        }
+
+        function quickStockChange(itemId, delta) {
+            const menu = StorageService.get(STORAGE_KEYS.MENU, []);
+            const idx = menu.findIndex(m => m.id === itemId);
+            if (idx > -1) {
+                menu[idx].stock += delta;
+                if (menu[idx].stock > 0) menu[idx].available = true;
+                StorageService.set(STORAGE_KEYS.MENU, menu);
+                App.showToast(`Added +${delta} stock to "${menu[idx].name}". New stock: ${menu[idx].stock}`, 'success');
+                renderInventoryTable();
+            }
+        }
+
+        function openEditItemModal(itemId) {
+            const menu = StorageService.get(STORAGE_KEYS.MENU, []);
+            const item = menu.find(m => m.id === itemId);
+            if (!item) return;
+
+            document.getElementById('editItemId').value = item.id;
+            document.getElementById('editItemName').value = item.name;
+            document.getElementById('editItemCategory').value = item.category;
+            document.getElementById('editItemPrice').value = item.price;
+            document.getElementById('editItemStock').value = item.stock;
+
+            const modal = new bootstrap.Modal(document.getElementById('editItemModal'));
+            modal.show();
+        }
+
+        function saveItemEdit() {
+            const id = document.getElementById('editItemId').value;
+            const name = document.getElementById('editItemName').value.trim();
+            const category = document.getElementById('editItemCategory').value;
+            const price = parseFloat(document.getElementById('editItemPrice').value) || 0;
+            const stock = parseInt(document.getElementById('editItemStock').value) || 0;
+
+            const menu = StorageService.get(STORAGE_KEYS.MENU, []);
+            const idx = menu.findIndex(m => m.id === id);
+            if (idx > -1) {
+                menu[idx].name = name;
+                menu[idx].category = category;
+                menu[idx].price = Number(price.toFixed(2));
+                menu[idx].stock = stock;
+                menu[idx].available = stock > 0;
+                StorageService.set(STORAGE_KEYS.MENU, menu);
+
+                App.showToast(`Updated "${name}" successfully.`, 'success');
+                bootstrap.Modal.getInstance(document.getElementById('editItemModal')).hide();
+                renderInventoryTable();
+            }
+        }
+
+        function deleteMenuItem() {
+            const id = document.getElementById('editItemId').value;
+            if (!confirm('Are you sure you want to remove this dish from the menu?')) return;
+
+            let menu = StorageService.get(STORAGE_KEYS.MENU, []);
+            menu = menu.filter(m => m.id !== id);
+            StorageService.set(STORAGE_KEYS.MENU, menu);
+
+            App.showToast('Item deleted from menu.', 'info');
+            bootstrap.Modal.getInstance(document.getElementById('editItemModal')).hide();
+            renderInventoryTable();
+        }
+    </script>
+</body>
+</html>

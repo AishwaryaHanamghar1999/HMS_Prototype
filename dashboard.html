@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Management Dashboard | The Grand Aurelia</title>
+    <!-- Bootstrap 5.3 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <!-- Custom Stylesheet -->
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+    <div class="dashboard-wrapper">
+        <!-- Desktop Sidebar -->
+        <aside class="dashboard-sidebar">
+            <a href="index.html" class="sidebar-brand">
+                <i class="bi bi-stars text-gold fs-4"></i>
+                <div>
+                    <span class="font-heading fw-bold fs-6 text-white d-block" style="letter-spacing: 0.05em;">THE GRAND AURELIA</span>
+                    <small class="text-gold" style="font-size: 0.65rem; letter-spacing: 0.1em;">MANAGEMENT SYSTEM</small>
+                </div>
+            </a>
+
+            <!-- Navigation Links Container (Generated dynamically based on role) -->
+            <nav class="sidebar-nav" id="sidebarNavContainer"></nav>
+
+            <!-- Sidebar Footer with user info & logout -->
+            <div class="sidebar-footer">
+                <div class="d-flex align-items-center justify-content-between">
+                    <button class="btn btn-sm btn-outline-danger w-100" onclick="AuthService.logout()">
+                        <i class="bi bi-box-arrow-right me-1"></i>Sign Out
+                    </button>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="dashboard-main">
+            <!-- Topbar -->
+            <header class="dashboard-topbar">
+                <div>
+                    <h4 class="font-heading fw-bold text-navy mb-0">Operations Dashboard</h4>
+                    <small class="text-muted d-none d-sm-block">Real-time status calculated from Local Storage records</small>
+                </div>
+
+                <!-- Topbar Right: Quick Demo Role Switcher + User Profile -->
+                <div class="d-flex align-items-center gap-2">
+                    <!-- Quick Demo Role Switcher Dropdown -->
+                    <div class="dropdown d-none d-md-block">
+                        <button class="btn btn-sm btn-outline-gold dropdown-toggle rounded-pill px-3 py-1" style="font-size: 0.75rem;" data-bs-toggle="dropdown">
+                            <i class="bi bi-arrow-repeat me-1"></i>Switch Demo Role
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end shadow border-0 small">
+                            <li><h6 class="dropdown-header text-uppercase" style="font-size: 0.65rem;">Switch Active Role</h6></li>
+                            <li><a class="dropdown-item py-1" href="javascript:void(0)" onclick="AuthService.quickSwitchRole('Admin')"><i class="bi bi-shield-check text-primary me-2"></i>Admin (Full Access)</a></li>
+                            <li><a class="dropdown-item py-1" href="javascript:void(0)" onclick="AuthService.quickSwitchRole('Manager')"><i class="bi bi-briefcase text-success me-2"></i>Manager (Operations)</a></li>
+                            <li><a class="dropdown-item py-1" href="javascript:void(0)" onclick="AuthService.quickSwitchRole('Receptionist')"><i class="bi bi-calendar2-check text-info me-2"></i>Receptionist (Front Desk)</a></li>
+                            <li><a class="dropdown-item py-1" href="javascript:void(0)" onclick="AuthService.quickSwitchRole('Waiter')"><i class="bi bi-cup-hot text-warning me-2"></i>Waiter (Table Orders)</a></li>
+                            <li><a class="dropdown-item py-1" href="javascript:void(0)" onclick="AuthService.quickSwitchRole('Customer')"><i class="bi bi-person-heart text-danger me-2"></i>Customer (Guest View)</a></li>
+                        </ul>
+                    </div>
+
+                    <a href="cart.html" class="btn btn-light border btn-sm rounded-pill position-relative px-2 py-1">
+                        <i class="bi bi-bag"></i>
+                        <span class="cart-badge badge rounded-pill bg-warning text-dark position-absolute top-0 start-100 translate-middle" style="font-size: 0.65rem; display: none;">0</span>
+                    </a>
+
+                    <div class="user-profile-widget">
+                        <!-- Rendered by app.js -->
+                    </div>
+                </div>
+            </header>
+
+            <!-- Dynamic Content Area -->
+            <div class="dashboard-content" id="dashboardContentArea">
+                <!-- Injected by DashboardModule.init() -->
+                <div class="text-center py-5">
+                    <div class="spinner-border text-gold" role="status"></div>
+                    <div class="small text-muted mt-2">Computing Local Storage Analytics...</div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Bootstrap 5 JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- App Modules -->
+    <script src="js/storage.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/payments.js"></script>
+    <script src="js/orders.js"></script>
+    <script src="js/bookings.js"></script>
+    <script src="js/dashboard.js"></script>
+    <script src="js/app.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Protect Route: Require logged in user
+            if (AuthService.requireAuth()) {
+                DashboardModule.init();
+            }
+        });
+    </script>
+</body>
+</html>

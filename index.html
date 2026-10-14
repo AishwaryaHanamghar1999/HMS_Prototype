@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Grand Aurelia Hotel & Resort | Luxury Living & Fine Dining</title>
+    <!-- Bootstrap 5.3 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <!-- Custom Stylesheet -->
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+    <!-- Public Navigation Bar -->
+    <nav class="public-navbar">
+        <div class="container d-flex align-items-center justify-content-between">
+            <a href="index.html" class="d-flex align-items-center gap-2 text-decoration-none text-white">
+                <i class="bi bi-stars text-gold fs-3"></i>
+                <div>
+                    <span class="font-heading fw-bold fs-4 text-white d-block" style="letter-spacing: 0.05em; line-height: 1;">THE GRAND AURELIA</span>
+                    <small class="text-gold" style="font-size: 0.65rem; letter-spacing: 0.15em;">HOTEL & FINE DINING</small>
+                </div>
+            </a>
+
+            <!-- Desktop Nav Links -->
+            <div class="d-none d-lg-flex align-items-center gap-1">
+                <a href="index.html" class="nav-link active">Home</a>
+                <a href="menu.html" class="nav-link">Food Menu</a>
+                <a href="table-booking.html" class="nav-link">Reserve Table</a>
+                <a href="room-booking.html" class="nav-link">Luxury Suites</a>
+                <a href="orders.html" class="nav-link">Track Orders</a>
+            </div>
+
+            <!-- Right Controls: Cart & Profile / Login -->
+            <div class="d-flex align-items-center gap-3">
+                <a href="cart.html" class="btn btn-outline-light btn-sm rounded-pill position-relative px-3 py-1 d-flex align-items-center gap-2">
+                    <i class="bi bi-bag"></i>
+                    <span class="d-none d-sm-inline">Cart</span>
+                    <span class="cart-badge badge rounded-pill bg-warning text-dark" style="font-size: 0.7rem; display: none;">0</span>
+                </a>
+
+                <div class="user-profile-widget">
+                    <!-- Populated dynamically by app.js -->
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-section text-center text-md-start">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-8">
+                    <div class="d-inline-flex align-items-center gap-2 bg-dark bg-opacity-50 px-3 py-1 rounded-pill border border-warning-subtle mb-3">
+                        <i class="bi bi-award-fill text-gold"></i>
+                        <span class="small text-gold fw-semibold" style="letter-spacing: 0.05em;">MICHELIN GUIDE 2026 RECOMMENDATION</span>
+                    </div>
+                    <h1 class="hero-title">Timeless Luxury, World-Class Gastronomy</h1>
+                    <p class="hero-subtitle">
+                        Immerse yourself in unrivaled hospitality at the coast. From bespoke oceanview suites to artisanal cuisine prepared by master chefs, every moment is an occasion.
+                    </p>
+                    <div class="d-flex flex-wrap gap-3 justify-content-center justify-content-md-start">
+                        <a href="menu.html" class="btn btn-gold px-4 py-2">
+                            <i class="bi bi-cup-straw me-1"></i>Order Food Online
+                        </a>
+                        <a href="table-booking.html" class="btn btn-outline-gold px-4 py-2">
+                            <i class="bi bi-calendar2-check me-1"></i>Reserve a Table
+                        </a>
+                        <a href="room-booking.html" class="btn btn-outline-light px-4 py-2">
+                            <i class="bi bi-door-open me-1"></i>Book Suite
+                        </a>
+                    </div>
+                </div>
+                <div class="col-lg-4 d-none d-lg-block">
+                    <div class="card-hotel p-4 bg-navy-surface text-white border-0 shadow-lg">
+                        <h5 class="font-heading text-gold mb-3"><i class="bi bi-shield-check me-2"></i>Prototype Demo Access</h5>
+                        <p class="small text-white-50 mb-3">
+                            Test all 5 role-based dashboards with predefined credentials:
+                        </p>
+                        <div class="small d-flex flex-column gap-2 mb-3">
+                            <div class="d-flex justify-content-between p-2 rounded bg-dark bg-opacity-50">
+                                <span><strong class="text-white">Admin:</strong> admin@hotel.demo</span>
+                                <span class="badge bg-gold text-dark">Admin@123</span>
+                            </div>
+                            <div class="d-flex justify-content-between p-2 rounded bg-dark bg-opacity-50">
+                                <span><strong class="text-white">Manager:</strong> manager@hotel.demo</span>
+                                <span class="badge bg-gold text-dark">Manager@123</span>
+                            </div>
+                            <div class="d-flex justify-content-between p-2 rounded bg-dark bg-opacity-50">
+                                <span><strong class="text-white">Reception:</strong> reception@hotel.demo</span>
+                                <span class="badge bg-gold text-dark">Reception@123</span>
+                            </div>
+                            <div class="d-flex justify-content-between p-2 rounded bg-dark bg-opacity-50">
+                                <span><strong class="text-white">Waiter:</strong> waiter@hotel.demo</span>
+                                <span class="badge bg-gold text-dark">Waiter@123</span>
+                            </div>
+                            <div class="d-flex justify-content-between p-2 rounded bg-dark bg-opacity-50">
+                                <span><strong class="text-white">Customer:</strong> customer@hotel.demo</span>
+                                <span class="badge bg-gold text-dark">Customer@123</span>
+                            </div>
+                        </div>
+                        <a href="login.html" class="btn btn-gold w-100 btn-sm">Open Demo Login Portal</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Key Highlights / Quick Feature Bar -->
+    <section class="py-4 bg-white border-bottom shadow-sm">
+        <div class="container">
+            <div class="row g-4 text-center">
+                <div class="col-6 col-md-3">
+                    <div class="d-flex align-items-center justify-content-center gap-3">
+                        <div class="stat-icon bg-warning-subtle text-warning-emphasis"><i class="bi bi-cup-hot"></i></div>
+                        <div class="text-start">
+                            <h6 class="fw-bold mb-0">Fine Dining</h6>
+                            <small class="text-muted">Signature Menu</small>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-6 col-md-3">
+                    <div class="d-flex align-items-center justify-content-center gap-3">
+                        <div class="stat-icon bg-primary-subtle text-primary"><i class="bi bi-calendar-check"></i></div>
+                        <div class="text-start">
+                            <h6 class="fw-bold mb-0">Table Booking</h6>
+                            <small class="text-muted">Instant Confirmation</small>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-6 col-md-3">
+                    <div class="d-flex align-items-center justify-content-center gap-3">
+                        <div class="stat-icon bg-success-subtle text-success"><i class="bi bi-door-open"></i></div>
+                        <div class="text-start">
+                            <h6 class="fw-bold mb-0">Luxury Suites</h6>
+                            <small class="text-muted">Ocean & Garden Views</small>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-6 col-md-3">
+                    <div class="d-flex align-items-center justify-content-center gap-3">
+                        <div class="stat-icon bg-info-subtle text-info"><i class="bi bi-credit-card"></i></div>
+                        <div class="text-start">
+                            <h6 class="fw-bold mb-0">Razorpay Ready</h6>
+                            <small class="text-muted">Simulated Checkout</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Popular Dishes Section -->
+    <section class="py-5">
+        <div class="container">
+            <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-end mb-4">
+                <div>
+                    <span class="text-gold text-uppercase fw-bold small" style="letter-spacing: 0.1em;">Epicurean Delights</span>
+                    <h2 class="font-heading fw-bold text-navy mb-1">Chef's Signature Selections</h2>
+                    <p class="text-muted small mb-0">Crafted with seasonal ingredients and culinary precision.</p>
+                </div>
+                <div class="mt-3 mt-md-0">
+                    <a href="menu.html" class="btn btn-outline-gold btn-sm px-3">
+                        View Full Menu (8 Items) <i class="bi bi-arrow-right ms-1"></i>
+                    </a>
+                </div>
+            </div>
+
+            <div class="row g-4" id="homePopularMenuGrid">
+                <!-- Populated via script -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Room & Suite Showcase -->
+    <section class="py-5 bg-white border-top border-bottom">
+        <div class="container">
+            <div class="text-center max-w-600 mx-auto mb-5">
+                <span class="text-gold text-uppercase fw-bold small" style="letter-spacing: 0.1em;">Accommodations</span>
+                <h2 class="font-heading fw-bold text-navy mb-2">Unparalleled Comfort & Views</h2>
+                <p class="text-muted small">Choose between our lavish oceanview suites, royal penthouses, and peaceful garden sanctuaries.</p>
+            </div>
+
+            <div class="row g-4" id="homeRoomsGrid">
+                <!-- Populated via script -->
+            </div>
+
+            <div class="text-center mt-4">
+                <a href="room-booking.html" class="btn btn-navy px-4">
+                    <i class="bi bi-building me-1"></i>Explore All Rooms & Check Availability
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Hotel Information & Contact -->
+    <section class="py-5">
+        <div class="container">
+            <div class="row g-4">
+                <div class="col-lg-6">
+                    <div class="card-hotel p-4 p-md-5 h-100 bg-navy-surface text-white border-0">
+                        <span class="text-gold text-uppercase fw-bold small" style="letter-spacing: 0.1em;">Location & Concierge</span>
+                        <h3 class="font-heading fw-bold text-white mt-1 mb-3">The Grand Aurelia Hotel & Resort</h3>
+                        <p class="text-white-50 small mb-4">
+                            Nestled along the prestigious Coastal Bay Promenade, our resort combines classical Mediterranean grandeur with state-of-the-art hospitality management.
+                        </p>
+                        
+                        <div class="d-flex flex-column gap-3 small">
+                            <div class="d-flex align-items-center gap-3">
+                                <i class="bi bi-geo-alt-fill text-gold fs-5"></i>
+                                <span>742 Royal Promenade Avenue, Coastal Bay, CA 90210</span>
+                            </div>
+                            <div class="d-flex align-items-center gap-3">
+                                <i class="bi bi-telephone-fill text-gold fs-5"></i>
+                                <span>+1 (800) 555-AURELIA / +1 (555) 019-2831</span>
+                            </div>
+                            <div class="d-flex align-items-center gap-3">
+                                <i class="bi bi-envelope-fill text-gold fs-5"></i>
+                                <span>concierge@grandaurelia.com</span>
+                            </div>
+                            <div class="d-flex align-items-center gap-3">
+                                <i class="bi bi-clock-fill text-gold fs-5"></i>
+                                <span>Front Desk: 24/7 | Restaurant: 07:00 AM – 11:30 PM</span>
+                            </div>
+                        </div>
+
+                        <div class="mt-4 pt-3 border-top border-secondary d-flex gap-3">
+                            <a href="table-booking.html" class="btn btn-gold btn-sm"><i class="bi bi-calendar-event me-1"></i>Book a Table</a>
+                            <a href="menu.html" class="btn btn-outline-light btn-sm"><i class="bi bi-bag me-1"></i>Room Service</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Guest Feedback Submission Form -->
+                <div class="col-lg-6">
+                    <div class="card-hotel p-4 p-md-5 h-100">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <h4 class="font-heading fw-bold text-navy mb-0">Guest Feedback & Inquiries</h4>
+                            <div class="text-warning">
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                            </div>
+                        </div>
+                        <p class="text-muted small mb-4">We treasure your perspective. Share your dining or stay experience with our management team.</p>
+
+                        <form id="feedbackForm" onsubmit="event.preventDefault(); submitFeedback();">
+                            <div class="mb-3">
+                                <label class="form-label small fw-semibold">Your Name *</label>
+                                <input type="text" class="form-control form-control-sm" id="fbName" required placeholder="Lady Catherine Finch">
+                            </div>
+                            <div class="row g-2 mb-3">
+                                <div class="col-6">
+                                    <label class="form-label small fw-semibold">Service Type</label>
+                                    <select class="form-select form-select-sm" id="fbService">
+                                        <option>Dining & Restaurant</option>
+                                        <option>Hotel Suite Stay</option>
+                                        <option>Online Food Delivery</option>
+                                        <option>Concierge Service</option>
+                                    </select>
+                                </div>
+                                <div class="col-6">
+                                    <label class="form-label small fw-semibold">Rating</label>
+                                    <select class="form-select form-select-sm" id="fbRating">
+                                        <option value="5">⭐⭐⭐⭐⭐ 5 Stars</option>
+                                        <option value="4">⭐⭐⭐⭐ 4 Stars</option>
+                                        <option value="3">⭐⭐⭐ 3 Stars</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label small fw-semibold">Feedback Comments *</label>
+                                <textarea class="form-control form-control-sm" id="fbComments" rows="3" required placeholder="Describe your experience with our staff, food, or amenities..."></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-gold btn-sm px-4">
+                                <i class="bi bi-send me-1"></i>Submit Feedback
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Public Footer -->
+    <footer class="bg-navy-dark text-white pt-5 pb-4 border-top border-secondary">
+        <div class="container">
+            <div class="row g-4 mb-4">
+                <div class="col-lg-4">
+                    <div class="d-flex align-items-center gap-2 mb-2">
+                        <i class="bi bi-stars text-gold fs-4"></i>
+                        <span class="font-heading fw-bold fs-5 text-white">THE GRAND AURELIA</span>
+                    </div>
+                    <p class="text-white-50 small mb-3">
+                        A modern, professional hotel management system prototype with online ordering, table reservations, room stays, role-based dashboards, and local storage persistence.
+                    </p>
+                    <div class="d-flex gap-2">
+                        <span class="badge bg-gold text-dark">Local Storage DB</span>
+                        <span class="badge bg-primary">Bootstrap 5.3</span>
+                        <span class="badge bg-success">5 Demo Roles</span>
+                    </div>
+                </div>
+                <div class="col-6 col-lg-2">
+                    <h6 class="text-gold fw-bold small text-uppercase mb-3">Guest Links</h6>
+                    <ul class="list-unstyled small d-flex flex-column gap-2 text-white-50">
+                        <li><a href="menu.html" class="text-white-50 text-decoration-none">Food Ordering</a></li>
+                        <li><a href="table-booking.html" class="text-white-50 text-decoration-none">Table Booking</a></li>
+                        <li><a href="room-booking.html" class="text-white-50 text-decoration-none">Room Stays</a></li>
+                        <li><a href="orders.html" class="text-white-50 text-decoration-none">Order Tracking</a></li>
+                    </ul>
+                </div>
+                <div class="col-6 col-lg-2">
+                    <h6 class="text-gold fw-bold small text-uppercase mb-3">Management</h6>
+                    <ul class="list-unstyled small d-flex flex-column gap-2 text-white-50">
+                        <li><a href="dashboard.html" class="text-white-50 text-decoration-none">Dashboard</a></li>
+                        <li><a href="login.html" class="text-white-50 text-decoration-none">Staff Login</a></li>
+                        <li><a href="rooms.html" class="text-white-50 text-decoration-none">Room Inventory</a></li>
+                        <li><a href="reports.html" class="text-white-50 text-decoration-none">Sales Reports</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-4">
+                    <h6 class="text-gold fw-bold small text-uppercase mb-3">Prototype Controls</h6>
+                    <p class="small text-white-50 mb-3">
+                        This application stores all state in your browser's Local Storage. To reset sample data to factory defaults:
+                    </p>
+                    <button class="btn btn-outline-danger btn-sm" onclick="App.confirmResetData()">
+                        <i class="bi bi-arrow-counterclockwise me-1"></i>Reset Prototype Local Storage
+                    </button>
+                </div>
+            </div>
+
+            <div class="border-top border-secondary pt-3 d-flex flex-column flex-md-row justify-content-between align-items-center small text-white-50">
+                <p class="mb-0">© 2026 The Grand Aurelia Hotel & Resort Prototype. All rights reserved.</p>
+                <div class="d-flex gap-3 mt-2 mt-md-0">
+                    <a href="javascript:void(0)" class="text-white-50 text-decoration-none" onclick="alert('Prototype Notice: Terms of Service simulate standard hotel policies.')">Terms</a>
+                    <a href="javascript:void(0)" class="text-white-50 text-decoration-none" onclick="alert('Prototype Notice: No real customer payment card data is retained.')">Privacy</a>
+                    <a href="javascript:void(0)" class="text-white-50 text-decoration-none" onclick="alert('Cancellation policy: Table cancellations permitted up to 2 hours prior.')">Cancellation Policy</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap 5 JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Core App Scripts -->
+    <script src="js/storage.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/payments.js"></script>
+    <script src="js/orders.js"></script>
+    <script src="js/bookings.js"></script>
+    <script src="js/app.js"></script>
+
+    <script>
+        // Render Popular Menu Items on Home
+        document.addEventListener('DOMContentLoaded', () => {
+            const menu = StorageService.get(STORAGE_KEYS.MENU, []);
+            const popularItems = menu.slice(0, 3);
+            const container = document.getElementById('homePopularMenuGrid');
+
+            if (container) {
+                let html = '';
+                popularItems.forEach(item => {
+                    html += `
+                        <div class="col-12 col-md-4">
+                            <div class="menu-card h-100">
+                                <div class="menu-card-img-wrap">
+                                    <img src="${item.image}" alt="${item.name}">
+                                    <div class="position-absolute top-0 start-0 m-2">
+                                        <span class="badge ${item.isVeg ? 'bg-success' : 'bg-danger'} shadow-sm">
+                                            <span class="food-type-icon ${item.isVeg ? 'food-type-veg' : 'food-type-nonveg'} bg-white me-1"></span>
+                                            ${item.isVeg ? 'Pure Veg' : 'Non-Veg'}
+                                        </span>
+                                    </div>
+                                    <div class="position-absolute top-0 end-0 m-2">
+                                        <span class="badge bg-navy-surface text-white shadow-sm">${item.stock} in stock</span>
+                                    </div>
+                                </div>
+                                <div class="menu-card-body">
+                                    <div class="d-flex justify-content-between align-items-start mb-1">
+                                        <span class="text-muted text-uppercase fw-semibold" style="font-size:0.75rem;">${item.category}</span>
+                                        <span class="fs-5 fw-bold text-gold">${App.formatCurrency(item.price)}</span>
+                                    </div>
+                                    <h5 class="fw-bold font-heading text-dark mb-2">${item.name}</h5>
+                                    <p class="text-muted small mb-3 flex-grow-1">${item.description}</p>
+                                    <div class="d-flex justify-content-between align-items-center pt-2 border-top">
+                                        <a href="menu.html" class="btn btn-outline-secondary btn-sm">View Item</a>
+                                        <button class="btn btn-gold btn-sm" onclick="StorageService.addToCart(${JSON.stringify(item).replace(/"/g, '&quot;')}, 1); App.showToast('Added to cart!'); App.updateCartBadge();">
+                                            <i class="bi bi-bag-plus me-1"></i>Add
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                });
+                container.innerHTML = html;
+            }
+
+            // Render Home Rooms Showcase
+            const rooms = StorageService.get(STORAGE_KEYS.ROOMS, []).slice(0, 3);
+            const roomsContainer = document.getElementById('homeRoomsGrid');
+            if (roomsContainer) {
+                let rHtml = '';
+                rooms.forEach(r => {
+                    rHtml += `
+                        <div class="col-12 col-md-4">
+                            <div class="room-card h-100">
+                                <img src="${r.image}" class="room-card-img" alt="${r.type}">
+                                <div class="p-3">
+                                    <div class="d-flex justify-content-between align-items-start mb-1">
+                                        <h5 class="fw-bold font-heading text-dark mb-0">${r.type}</h5>
+                                        <span class="fw-bold text-gold fs-5">${App.formatCurrency(r.pricePerNight)}</span>
+                                    </div>
+                                    <p class="text-muted small mb-3">Room ${r.number} • ${r.size} • Up to ${r.capacity} Guests</p>
+                                    <a href="room-booking.html" class="btn btn-outline-gold btn-sm w-100">
+                                        <i class="bi bi-calendar2-check me-1"></i>Check Availability & Book
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                });
+                roomsContainer.innerHTML = rHtml;
+            }
+        });
+
+        // Submit Feedback
+        function submitFeedback() {
+            const name = document.getElementById('fbName').value.trim();
+            const service = document.getElementById('fbService').value;
+            const rating = parseInt(document.getElementById('fbRating').value) || 5;
+            const comments = document.getElementById('fbComments').value.trim();
+
+            const feedback = StorageService.get(STORAGE_KEYS.FEEDBACK, []);
+            feedback.unshift({
+                id: StorageService.generateId('fb'),
+                customerName: name,
+                rating,
+                serviceType: service,
+                comments,
+                date: new Date().toISOString().split('T')[0]
+            });
+            StorageService.set(STORAGE_KEYS.FEEDBACK, feedback);
+
+            App.showToast('Thank you! Your feedback has been received.', 'success');
+            document.getElementById('feedbackForm').reset();
+        }
+    </script>
+</body>
+</html>

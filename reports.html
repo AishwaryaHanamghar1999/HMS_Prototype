@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Financial & Operations Reports | The Grand Aurelia</title>
+    <!-- Bootstrap 5.3 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <!-- Custom Stylesheet -->
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+    <div class="dashboard-wrapper">
+        <aside class="dashboard-sidebar">
+            <a href="index.html" class="sidebar-brand">
+                <i class="bi bi-stars text-gold fs-4"></i>
+                <div>
+                    <span class="font-heading fw-bold fs-6 text-white d-block" style="letter-spacing: 0.05em;">THE GRAND AURELIA</span>
+                    <small class="text-gold" style="font-size: 0.65rem; letter-spacing: 0.1em;">REPORTS & AUDITING</small>
+                </div>
+            </a>
+            <nav class="sidebar-nav" id="sidebarNavContainer"></nav>
+            <div class="sidebar-footer">
+                <button class="btn btn-sm btn-outline-danger w-100" onclick="AuthService.logout()">
+                    <i class="bi bi-box-arrow-right me-1"></i>Sign Out
+                </button>
+            </div>
+        </aside>
+
+        <main class="dashboard-main">
+            <header class="dashboard-topbar">
+                <div>
+                    <h4 class="font-heading fw-bold text-navy mb-0">Financial & Operations Intelligence</h4>
+                    <small class="text-muted d-none d-sm-block">Calculated purely from saved Local Storage transaction records</small>
+                </div>
+
+                <div class="d-flex align-items-center gap-2">
+                    <button class="btn btn-gold btn-sm" onclick="window.print()">
+                        <i class="bi bi-printer"></i><span class="d-none d-sm-inline ms-1">Print Report</span>
+                    </button>
+                    <div class="user-profile-widget"></div>
+                </div>
+            </header>
+
+            <div class="dashboard-content">
+                
+                <!-- Financial Overview Cards -->
+                <div class="row g-3 mb-4">
+                    <div class="col-12 col-sm-6 col-xl-3">
+                        <div class="stat-card">
+                            <span class="text-muted small fw-semibold">Total Gross Revenue</span>
+                            <h3 class="fw-bold text-navy font-heading mt-1" id="repTotalGross">$0.00</h3>
+                            <small class="text-success"><i class="bi bi-check-circle-fill me-1"></i>Combined Dining + Rooms</small>
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-6 col-xl-3">
+                        <div class="stat-card">
+                            <span class="text-muted small fw-semibold">Dining Sales</span>
+                            <h3 class="fw-bold text-gold font-heading mt-1" id="repDiningSales">$0.00</h3>
+                            <small class="text-muted" id="repDiningOrdersCount">0 Orders Settled</small>
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-6 col-xl-3">
+                        <div class="stat-card">
+                            <span class="text-muted small fw-semibold">Hotel Suite Revenue</span>
+                            <h3 class="fw-bold text-primary font-heading mt-1" id="repRoomRevenue">$0.00</h3>
+                            <small class="text-muted" id="repRoomStaysCount">0 Stays Booked</small>
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-6 col-xl-3">
+                        <div class="stat-card">
+                            <span class="text-muted small fw-semibold">Hospitality Tax Collected</span>
+                            <h3 class="fw-bold text-navy font-heading mt-1" id="repTaxCollected">$0.00</h3>
+                            <small class="text-muted">Standard 5% Tax Levy</small>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row g-4 mb-4">
+                    <!-- Top Selling Items -->
+                    <div class="col-12 col-lg-6">
+                        <div class="card-hotel p-4 bg-white border h-100">
+                            <h5 class="font-heading fw-bold text-navy mb-3">
+                                <i class="bi bi-trophy-fill text-gold me-2"></i>Best-Selling Menu Items
+                            </h5>
+                            <div class="table-responsive">
+                                <table class="table table-hover align-middle mb-0">
+                                    <thead class="table-light small">
+                                        <tr>
+                                            <th>Dish Title</th>
+                                            <th class="text-center">Units Sold</th>
+                                            <th class="text-end">Revenue Generated</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="repTopSellingTableBody">
+                                        <!-- Computed from orders -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Payment & Order Pipeline Breakdown -->
+                    <div class="col-12 col-lg-6">
+                        <div class="card-hotel p-4 bg-white border h-100">
+                            <h5 class="font-heading fw-bold text-navy mb-3">
+                                <i class="bi bi-pie-chart-fill text-gold me-2"></i>Payment & Fulfillment Audit
+                            </h5>
+                            
+                            <div class="d-flex flex-column gap-3">
+                                <div>
+                                    <div class="d-flex justify-content-between small fw-semibold mb-1">
+                                        <span>Successful Gateway / Settle Transactions</span>
+                                        <span class="text-success" id="repPaySuccessful">0</span>
+                                    </div>
+                                    <div class="progress" style="height: 8px;">
+                                        <div class="progress-bar bg-success" id="repPaySuccessBar" style="width: 80%;"></div>
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <div class="d-flex justify-content-between small fw-semibold mb-1">
+                                        <span>Pending Payments (Counter / Cash)</span>
+                                        <span class="text-warning-emphasis" id="repPayPending">0</span>
+                                    </div>
+                                    <div class="progress" style="height: 8px;">
+                                        <div class="progress-bar bg-warning" id="repPayPendingBar" style="width: 20%;"></div>
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <div class="d-flex justify-content-between small fw-semibold mb-1">
+                                        <span>Cancelled / Voided Transactions</span>
+                                        <span class="text-danger" id="repPayCancelled">0</span>
+                                    </div>
+                                    <div class="progress" style="height: 8px;">
+                                        <div class="progress-bar bg-danger" id="repPayCancelledBar" style="width: 0%;"></div>
+                                    </div>
+                                </div>
+
+                                <div class="bg-light p-3 rounded-3 mt-2 border">
+                                    <h6 class="fw-bold text-navy small mb-2">Reservation Summaries</h6>
+                                    <div class="d-flex justify-content-between text-muted small mb-1">
+                                        <span>Confirmed Restaurant Tables:</span>
+                                        <strong class="text-dark" id="repTableBookingsCount">0</strong>
+                                    </div>
+                                    <div class="d-flex justify-content-between text-muted small">
+                                        <span>Occupied / Confirmed Room Stays:</span>
+                                        <strong class="text-dark" id="repActiveStaysCount">0</strong>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Cancelled Audits Table -->
+                <div class="card-hotel p-4 bg-white border">
+                    <h5 class="font-heading fw-bold text-navy mb-3">
+                        <i class="bi bi-shield-exclamation text-danger me-2"></i>Cancellation Audit Log
+                    </h5>
+                    <!-- Desktop Table -->
+                    <div class="d-none d-md-block">
+                        <div class="table-responsive">
+                            <table class="table table-hover align-middle mb-0">
+                                <thead class="table-light small">
+                                    <tr>
+                                        <th>Record Ref</th>
+                                        <th>Category</th>
+                                        <th>Customer / Guest</th>
+                                        <th>Scheduled Date</th>
+                                        <th>Status Reason</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="repCancellationsTableBody">
+                                    <!-- Populated dynamically -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Mobile Cards List -->
+                    <div class="d-md-none" id="repCancellationsMobileList">
+                        <!-- Populated dynamically -->
+                    </div>
+                </div>
+
+            </div>
+        </main>
+    </div>
+
+    <!-- Bootstrap 5 JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- App Modules -->
+    <script src="js/storage.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/dashboard.js"></script>
+    <script src="js/app.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Strictly require Admin or Manager role
+            if (AuthService.requireAuth(['Admin', 'Manager'])) {
+                generateRealReports();
+            }
+        });
+
+        function generateRealReports() {
+            const orders = StorageService.get(STORAGE_KEYS.ORDERS, []);
+            const roomBookings = StorageService.get(STORAGE_KEYS.ROOM_BOOKINGS, []);
+            const tableBookings = StorageService.get(STORAGE_KEYS.TABLE_BOOKINGS, []);
+
+            // 1. Calculate Dining Totals
+            let diningGross = 0;
+            let diningTax = 0;
+            let settledOrdersCount = 0;
+
+            const itemSalesMap = {};
+
+            orders.forEach(o => {
+                if (o.paymentStatus === 'Successful') {
+                    diningGross += (o.total || 0);
+                    diningTax += (o.tax || 0);
+                    settledOrdersCount++;
+                }
+
+                // Tally best sellers
+                (o.items || []).forEach(item => {
+                    if (!itemSalesMap[item.name]) {
+                        itemSalesMap[item.name] = { name: item.name, quantity: 0, revenue: 0 };
+                    }
+                    itemSalesMap[item.name].quantity += item.quantity;
+                    itemSalesMap[item.name].revenue += item.subtotal;
+                });
+            });
+
+            // 2. Calculate Room Stays Totals
+            let roomGross = 0;
+            let settledStaysCount = 0;
+
+            roomBookings.forEach(rb => {
+                if (rb.paymentStatus === 'Successful') {
+                    roomGross += (rb.totalCost || 0);
+                    settledStaysCount++;
+                }
+            });
+
+            const totalGross = diningGross + roomGross;
+
+            // Render KPI values
+            document.getElementById('repTotalGross').textContent = App.formatCurrency(totalGross);
+            document.getElementById('repDiningSales').textContent = App.formatCurrency(diningGross);
+            document.getElementById('repDiningOrdersCount').textContent = `${settledOrdersCount} Orders Settled`;
+            document.getElementById('repRoomRevenue').textContent = App.formatCurrency(roomGross);
+            document.getElementById('repRoomStaysCount').textContent = `${settledStaysCount} Stays Settled`;
+            document.getElementById('repTaxCollected').textContent = App.formatCurrency(diningTax + (roomGross * 0.05));
+
+            // Render Top Selling Items Table
+            const topSellingList = Object.values(itemSalesMap).sort((a, b) => b.quantity - a.quantity);
+            const topTbody = document.getElementById('repTopSellingTableBody');
+            
+            if (topSellingList.length === 0) {
+                topTbody.innerHTML = `<tr><td colspan="3" class="text-center py-3 text-muted small">No items sold yet.</td></tr>`;
+            } else {
+                topTbody.innerHTML = topSellingList.slice(0, 5).map(item => `
+                    <tr>
+                        <td class="fw-semibold text-dark">${item.name}</td>
+                        <td class="text-center"><span class="badge bg-light text-dark border">${item.quantity} orders</span></td>
+                        <td class="text-end fw-bold text-navy">${App.formatCurrency(item.revenue)}</td>
+                    </tr>
+                `).join('');
+            }
+
+            // 3. Payment Status Counters
+            const paySuccessCount = orders.filter(o => o.paymentStatus === 'Successful').length + roomBookings.filter(r => r.paymentStatus === 'Successful').length;
+            const payPendingCount = orders.filter(o => o.paymentStatus === 'Pending').length + roomBookings.filter(r => r.paymentStatus === 'Pending').length;
+            const payCancelledCount = orders.filter(o => o.orderStatus === 'Cancelled').length + roomBookings.filter(r => r.bookingStatus === 'Cancelled').length;
+
+            const totalPayRecords = (paySuccessCount + payPendingCount + payCancelledCount) || 1;
+
+            document.getElementById('repPaySuccessful').textContent = paySuccessCount;
+            document.getElementById('repPayPending').textContent = payPendingCount;
+            document.getElementById('repPayCancelled').textContent = payCancelledCount;
+
+            document.getElementById('repPaySuccessBar').style.width = `${Math.round((paySuccessCount / totalPayRecords) * 100)}%`;
+            document.getElementById('repPayPendingBar').style.width = `${Math.round((payPendingCount / totalPayRecords) * 100)}%`;
+            document.getElementById('repPayCancelledBar').style.width = `${Math.round((payCancelledCount / totalPayRecords) * 100)}%`;
+
+            document.getElementById('repTableBookingsCount').textContent = tableBookings.filter(b => b.status === 'Confirmed' || b.status === 'Seated').length;
+            document.getElementById('repActiveStaysCount').textContent = roomBookings.filter(b => b.bookingStatus === 'Confirmed' || b.bookingStatus === 'Occupied').length;
+
+            // 4. Cancellations Audit
+            const cancelledOrders = orders.filter(o => o.orderStatus === 'Cancelled').map(o => ({
+                id: o.id,
+                cat: 'Food Order',
+                name: o.customerName,
+                date: o.createdAt,
+                reason: 'Order was marked Cancelled by Staff or Customer'
+            }));
+
+            const cancelledRooms = roomBookings.filter(b => b.bookingStatus === 'Cancelled').map(b => ({
+                id: b.id,
+                cat: 'Room Stay',
+                name: b.guestName,
+                date: b.checkIn,
+                reason: 'Room reservation cancelled prior to check-in'
+            }));
+
+            const cancelledTables = tableBookings.filter(t => t.status === 'Cancelled').map(t => ({
+                id: t.id,
+                cat: 'Table Booking',
+                name: t.customerName,
+                date: `${t.date} (${t.timeSlot})`,
+                reason: 'Table booking cancelled'
+            }));
+
+            const allCancellations = [...cancelledOrders, ...cancelledRooms, ...cancelledTables];
+            const cancTbody = document.getElementById('repCancellationsTableBody');
+            const cancMobile = document.getElementById('repCancellationsMobileList');
+
+            if (allCancellations.length === 0) {
+                if (cancTbody) cancTbody.innerHTML = `<tr><td colspan="5" class="text-center py-3 text-muted small">No cancellations logged in current database.</td></tr>`;
+                if (cancMobile) cancMobile.innerHTML = `<div class="text-center py-3 text-muted small">No cancellations logged in current database.</div>`;
+            } else {
+                if (cancTbody) {
+                    cancTbody.innerHTML = allCancellations.map(c => `
+                        <tr>
+                            <td class="fw-bold font-monospace text-navy">${c.id}</td>
+                            <td><span class="badge bg-secondary-subtle text-dark">${c.cat}</span></td>
+                            <td>${c.name}</td>
+                            <td class="small text-muted">${c.date}</td>
+                            <td class="small text-danger">${c.reason}</td>
+                        </tr>
+                    `).join('');
+                }
+
+                if (cancMobile) {
+                    cancMobile.innerHTML = allCancellations.map(c => `
+                        <div class="mobile-record-card border-danger-subtle">
+                            <div class="d-flex justify-content-between align-items-center mb-1">
+                                <span class="fw-bold font-monospace text-navy">${c.id}</span>
+                                <span class="badge bg-secondary-subtle text-dark">${c.cat}</span>
+                            </div>
+                            <div class="fw-semibold text-dark small mb-1">${c.name}</div>
+                            <small class="text-muted d-block mb-1"><i class="bi bi-calendar-x me-1"></i>${c.date}</small>
+                            <div class="small text-danger fst-italic">${c.reason}</div>
+                        </div>
+                    `).join('');
+                }
+            }
+        }
+    </script>
+</body>
+</html>

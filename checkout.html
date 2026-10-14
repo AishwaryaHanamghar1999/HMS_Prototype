@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gourmet Order Checkout | The Grand Aurelia</title>
+    <!-- Bootstrap 5.3 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <!-- Custom Stylesheet -->
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+    <!-- Public Navigation Bar -->
+    <nav class="public-navbar">
+        <div class="container d-flex align-items-center justify-content-between">
+            <a href="index.html" class="d-flex align-items-center gap-2 text-decoration-none text-white">
+                <i class="bi bi-stars text-gold fs-3"></i>
+                <div>
+                    <span class="font-heading fw-bold fs-4 text-white d-block" style="letter-spacing: 0.05em; line-height: 1;">THE GRAND AURELIA</span>
+                    <small class="text-gold" style="font-size: 0.65rem; letter-spacing: 0.15em;">CHECKOUT & PAYMENT</small>
+                </div>
+            </a>
+
+            <div class="d-none d-lg-flex align-items-center gap-1">
+                <a href="index.html" class="nav-link">Home</a>
+                <a href="menu.html" class="nav-link">Food Menu</a>
+                <a href="table-booking.html" class="nav-link">Reserve Table</a>
+                <a href="room-booking.html" class="nav-link">Luxury Suites</a>
+                <a href="orders.html" class="nav-link">Orders</a>
+            </div>
+
+            <div class="d-flex align-items-center gap-3">
+                <div class="user-profile-widget"></div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Checkout Main Section -->
+    <main class="py-5">
+        <div class="container">
+            <div class="mb-4 pb-2 border-bottom">
+                <h2 class="font-heading fw-bold text-navy mb-1">Confirm Dining Order & Payment</h2>
+                <p class="text-muted small mb-0">Select your dining preference, contact info, and payment gateway method.</p>
+            </div>
+
+            <div class="row g-4" id="checkoutContainer">
+                <!-- Left Column: Checkout Form -->
+                <div class="col-lg-7">
+                    <form id="checkoutForm" onsubmit="event.preventDefault(); handlePlaceOrder();">
+                        
+                        <!-- 1. Order Type Selection -->
+                        <div class="card-hotel p-4 mb-4 bg-white border">
+                            <h5 class="font-heading fw-bold text-navy mb-3">1. Select Dining Type</h5>
+                            
+                            <div class="row g-3">
+                                <div class="col-12 col-sm-4">
+                                    <label class="card-hotel p-3 d-flex flex-column align-items-center text-center cursor-pointer border h-100" style="cursor: pointer;">
+                                        <input type="radio" name="orderType" value="Dine-in" class="form-check-input mb-2" checked onchange="toggleOrderTypeFields('Dine-in')">
+                                        <i class="bi bi-cup-hot text-gold fs-3 mb-1"></i>
+                                        <strong class="small text-dark">Dine-In</strong>
+                                        <span class="text-muted" style="font-size: 0.7rem;">Select table</span>
+                                    </label>
+                                </div>
+                                <div class="col-12 col-sm-4">
+                                    <label class="card-hotel p-3 d-flex flex-column align-items-center text-center cursor-pointer border h-100" style="cursor: pointer;">
+                                        <input type="radio" name="orderType" value="Room Delivery" class="form-check-input mb-2" onchange="toggleOrderTypeFields('Room Delivery')">
+                                        <i class="bi bi-door-closed text-gold fs-3 mb-1"></i>
+                                        <strong class="small text-dark">Room Delivery</strong>
+                                        <span class="text-muted" style="font-size: 0.7rem;">To your suite</span>
+                                    </label>
+                                </div>
+                                <div class="col-12 col-sm-4">
+                                    <label class="card-hotel p-3 d-flex flex-column align-items-center text-center cursor-pointer border h-100" style="cursor: pointer;">
+                                        <input type="radio" name="orderType" value="Takeaway / Pickup" class="form-check-input mb-2" onchange="toggleOrderTypeFields('Takeaway / Pickup')">
+                                        <i class="bi bi-box-seam text-gold fs-3 mb-1"></i>
+                                        <strong class="small text-dark">Takeaway</strong>
+                                        <span class="text-muted" style="font-size: 0.7rem;">Counter pickup</span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <!-- Dine-In Table Selection -->
+                            <div id="dineInFields" class="mt-3 pt-3 border-top">
+                                <label class="form-label small fw-semibold">Select Table for Dine-In *</label>
+                                <select class="form-select form-select-sm" id="checkoutTableSelect">
+                                    <!-- Populated by script -->
+                                </select>
+                            </div>
+
+                            <!-- Room Delivery Address -->
+                            <div id="deliveryFields" class="mt-3 pt-3 border-top d-none">
+                                <label class="form-label small fw-semibold">Suite Number / Room Address *</label>
+                                <input type="text" class="form-control form-control-sm" id="checkoutDeliveryAddress" placeholder="e.g. Room 201, Presidential Penthouse">
+                            </div>
+                        </div>
+
+                        <!-- 2. Guest Information -->
+                        <div class="card-hotel p-4 mb-4 bg-white border">
+                            <h5 class="font-heading fw-bold text-navy mb-3">2. Guest Details</h5>
+                            
+                            <div class="row g-3">
+                                <div class="col-12 col-sm-6">
+                                    <label class="form-label small fw-semibold">Full Name *</label>
+                                    <input type="text" class="form-control form-control-sm" id="checkoutName" required>
+                                </div>
+                                <div class="col-12 col-sm-6">
+                                    <label class="form-label small fw-semibold">Phone Number *</label>
+                                    <input type="tel" class="form-control form-control-sm" id="checkoutPhone" required>
+                                </div>
+                                <div class="col-12">
+                                    <label class="form-label small fw-semibold">Email Address *</label>
+                                    <input type="email" class="form-control form-control-sm" id="checkoutEmail" required>
+                                </div>
+                                <div class="col-12">
+                                    <label class="form-label small fw-semibold">Special Dietary or Chef Notes</label>
+                                    <textarea class="form-control form-control-sm" id="checkoutNotes" rows="2" placeholder="e.g. Gluten-free preparation, extra garnish, cutlery required..."></textarea>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 3. Payment Method -->
+                        <div class="card-hotel p-4 mb-4 bg-white border">
+                            <h5 class="font-heading fw-bold text-navy mb-3">3. Payment Gateway Selection</h5>
+
+                            <div class="alert alert-info py-2 px-3 small rounded-3 mb-3 border-info-subtle d-flex align-items-center gap-2">
+                                <i class="bi bi-shield-check text-info fs-5"></i>
+                                <div>
+                                    <strong>Gateway Sandbox Architecture:</strong> Razorpay simulation modal is equipped for testing online card/UPI payments without charging real money.
+                                </div>
+                            </div>
+
+                            <div class="d-flex flex-column gap-2">
+                                <label class="p-3 border rounded-3 d-flex align-items-center justify-content-between" style="cursor: pointer;">
+                                    <div class="d-flex align-items-center gap-3">
+                                        <input type="radio" name="paymentMethod" value="Razorpay" class="form-check-input" checked>
+                                        <div>
+                                            <strong class="d-block text-dark small">Razorpay Online Gateway (Simulation Ready)</strong>
+                                            <small class="text-muted">Instant Card, UPI QR, and Net Banking sandbox testing</small>
+                                        </div>
+                                    </div>
+                                    <span class="badge bg-primary text-uppercase" style="font-size: 0.65rem;">Recommended</span>
+                                </label>
+
+                                <label class="p-3 border rounded-3 d-flex align-items-center justify-content-between" style="cursor: pointer;">
+                                    <div class="d-flex align-items-center gap-3">
+                                        <input type="radio" name="paymentMethod" value="Pay at Counter" class="form-check-input">
+                                        <div>
+                                            <strong class="d-block text-dark small">Pay at Counter / Room Charge</strong>
+                                            <small class="text-muted">Settle the bill in-person or charge to your room folio upon check-out</small>
+                                        </div>
+                                    </div>
+                                    <span class="badge bg-light text-muted border" style="font-size: 0.65rem;">Offline</span>
+                                </label>
+
+                                <label class="p-3 border rounded-3 d-flex align-items-center justify-content-between" style="cursor: pointer;">
+                                    <div class="d-flex align-items-center gap-3">
+                                        <input type="radio" name="paymentMethod" value="Cash on Delivery" class="form-check-input">
+                                        <div>
+                                            <strong class="d-block text-dark small">Cash on Delivery</strong>
+                                            <small class="text-muted">Pay physical cash upon food arrival</small>
+                                        </div>
+                                    </div>
+                                    <span class="badge bg-light text-muted border" style="font-size: 0.65rem;">Cash</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn btn-gold w-100 py-3 fs-5 fw-bold shadow">
+                            <i class="bi bi-lock-fill me-1"></i>Confirm & Place Order
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Right Column: Order Items Summary -->
+                <div class="col-lg-5">
+                    <div class="card-hotel p-4 bg-white border sticky-top" style="top: 90px;">
+                        <h5 class="font-heading fw-bold text-navy mb-3 pb-2 border-bottom">Order Review</h5>
+                        
+                        <div id="checkoutItemsList" class="mb-3">
+                            <!-- Populated by script -->
+                        </div>
+
+                        <div class="bg-light p-3 rounded-3 mb-3">
+                            <div class="d-flex justify-content-between text-muted small mb-2">
+                                <span>Subtotal:</span>
+                                <span class="fw-semibold text-dark" id="summarySubtotal">$0.00</span>
+                            </div>
+                            <div class="d-flex justify-content-between text-muted small mb-2">
+                                <span>Hospitality Tax (5%):</span>
+                                <span class="fw-semibold text-dark" id="summaryTax">$0.00</span>
+                            </div>
+                            <div class="d-flex justify-content-between fs-5 fw-bold text-navy border-top pt-2">
+                                <span>Final Total:</span>
+                                <span class="text-gold" id="summaryTotal">$0.00</span>
+                            </div>
+                        </div>
+
+                        <div class="small text-muted text-center">
+                            <i class="bi bi-clock-history me-1"></i>Estimated Prep Time: <strong>20 - 30 mins</strong>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Bootstrap 5 JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- App Modules -->
+    <script src="js/storage.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/payments.js"></script>
+    <script src="js/orders.js"></script>
+    <script src="js/app.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const cart = StorageService.getCart();
+            if (cart.length === 0) {
+                alert('Your cart is empty! Please add items before checking out.');
+                window.location.href = 'menu.html';
+                return;
+            }
+
+            populateCustomerDetails();
+            populateTablesDropdown();
+            renderOrderSummary();
+        });
+
+        function populateCustomerDetails() {
+            const user = AuthService.getCurrentUser();
+            if (user) {
+                document.getElementById('checkoutName').value = user.name || '';
+                document.getElementById('checkoutEmail').value = user.email || '';
+                document.getElementById('checkoutPhone').value = user.phone || '+1 (555) 019-8821';
+            }
+        }
+
+        function populateTablesDropdown() {
+            const select = document.getElementById('checkoutTableSelect');
+            const tables = StorageService.get(STORAGE_KEYS.TABLES, []);
+            let html = '';
+            tables.forEach(t => {
+                html += `<option value="${t.number}">${t.number} (${t.capacity} Seats) - ${t.location} [${t.status}]</option>`;
+            });
+            select.innerHTML = html;
+        }
+
+        function toggleOrderTypeFields(type) {
+            const dineIn = document.getElementById('dineInFields');
+            const delivery = document.getElementById('deliveryFields');
+
+            if (type === 'Dine-in') {
+                dineIn.classList.remove('d-none');
+                delivery.classList.add('d-none');
+            } else if (type === 'Room Delivery') {
+                dineIn.classList.add('d-none');
+                delivery.classList.remove('d-none');
+            } else {
+                dineIn.classList.add('d-none');
+                delivery.classList.add('d-none');
+            }
+        }
+
+        function renderOrderSummary() {
+            const cart = StorageService.getCart();
+            const totals = StorageService.getCartTotals();
+            const listContainer = document.getElementById('checkoutItemsList');
+
+            let html = '';
+            cart.forEach(item => {
+                html += `
+                    <div class="d-flex justify-content-between align-items-center py-2 border-bottom small">
+                        <div>
+                            <span class="fw-semibold text-dark">${item.quantity}x ${item.name}</span>
+                            <small class="text-muted d-block">${App.formatCurrency(item.price)} each</small>
+                        </div>
+                        <span class="fw-bold text-navy">${App.formatCurrency(item.subtotal)}</span>
+                    </div>
+                `;
+            });
+
+            listContainer.innerHTML = html;
+            document.getElementById('summarySubtotal').textContent = App.formatCurrency(totals.subtotal);
+            document.getElementById('summaryTax').textContent = App.formatCurrency(totals.tax);
+            document.getElementById('summaryTotal').textContent = App.formatCurrency(totals.total);
+        }
+
+        function handlePlaceOrder() {
+            const cart = StorageService.getCart();
+            if (cart.length === 0) {
+                App.showToast('Your cart is empty!', 'error');
+                return;
+            }
+
+            const totals = StorageService.getCartTotals();
+            const orderType = document.querySelector('input[name="orderType"]:checked').value;
+            const paymentMethodRadio = document.querySelector('input[name="paymentMethod"]:checked').value;
+            const name = document.getElementById('checkoutName').value.trim();
+            const email = document.getElementById('checkoutEmail').value.trim();
+            const phone = document.getElementById('checkoutPhone').value.trim();
+            const notes = document.getElementById('checkoutNotes').value.trim();
+
+            let tableNumber = null;
+            let deliveryAddress = null;
+
+            if (orderType === 'Dine-in') {
+                tableNumber = document.getElementById('checkoutTableSelect').value;
+            } else if (orderType === 'Room Delivery') {
+                deliveryAddress = document.getElementById('checkoutDeliveryAddress').value.trim();
+                if (!deliveryAddress) {
+                    App.showToast('Please specify your suite number or room delivery address.', 'error');
+                    return;
+                }
+            }
+
+            const user = AuthService.getCurrentUser();
+            const orderId = StorageService.generateId('ord');
+
+            const orderData = {
+                id: orderId,
+                customerId: user ? user.id : 'guest_' + Date.now(),
+                customerName: name,
+                customerEmail: email,
+                customerPhone: phone,
+                orderType: orderType,
+                tableNumber: tableNumber,
+                deliveryAddress: deliveryAddress,
+                items: cart,
+                subtotal: totals.subtotal,
+                tax: totals.tax,
+                total: totals.total,
+                notes: notes,
+                orderStatus: 'Pending',
+                paymentMethod: paymentMethodRadio === 'Razorpay' ? 'Razorpay (Online Simulation)' : paymentMethodRadio,
+                paymentStatus: 'Pending',
+                transactionRef: 'PENDING_' + Date.now(),
+                createdAt: StorageService.nowString()
+            };
+
+            // If Razorpay simulation is chosen, trigger modal
+            if (paymentMethodRadio === 'Razorpay') {
+                PaymentService.openPaymentModal(
+                    orderData,
+                    function onSuccess(payResult) {
+                        orderData.paymentStatus = 'Successful';
+                        orderData.transactionRef = payResult.transactionRef;
+                        orderData.orderStatus = 'Confirmed'; // Automatically confirm paid orders
+                        finalizeOrder(orderData);
+                    },
+                    function onFailure(err) {
+                        App.showToast(err.reason || 'Payment could not be completed.', 'error');
+                    }
+                );
+            } else {
+                // Offline / Cash on Delivery / Room Charge
+                finalizeOrder(orderData);
+            }
+        }
+
+        function finalizeOrder(order) {
+            const orders = StorageService.get(STORAGE_KEYS.ORDERS, []);
+            orders.unshift(order);
+            StorageService.set(STORAGE_KEYS.ORDERS, orders);
+
+            // Deduct inventory stock
+            StorageService.deductMenuStock(order.items);
+
+            // Clear shopping cart
+            StorageService.clearCart();
+            App.updateCartBadge();
+
+            App.showToast(`Order ${order.id} placed successfully!`, 'success');
+
+            setTimeout(() => {
+                window.location.href = 'orders.html';
+            }, 800);
+        }
+    </script>
+</body>
+</html>

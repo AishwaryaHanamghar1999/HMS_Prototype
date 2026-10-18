@@ -200,25 +200,39 @@ const BookingsModule = {
             let statusBadge = 'badge-available';
             if (tbl.status === 'Occupied') statusBadge = 'badge-occupied';
             if (tbl.status === 'Reserved') statusBadge = 'badge-pending';
+            if (tbl.status === 'Cleaning') statusBadge = 'badge-cleaning';
+
+            const activeOrder = StorageService.getActiveTableOrder ? StorageService.getActiveTableOrder(tbl.id) : null;
+            const runningTotal = activeOrder ? App.formatCurrency(activeOrder.total) : '';
 
             html += `
                 <div class="col-6 col-md-4 col-lg-2 mb-3">
-                    <div class="card-hotel p-2 p-sm-3 text-center h-100 ${tbl.status === 'Occupied' ? 'border-danger' : tbl.status === 'Reserved' ? 'border-warning' : 'border-success'}">
+                    <div class="card-hotel p-2 p-sm-3 text-center h-100 ${tbl.status === 'Occupied' ? 'border-danger' : tbl.status === 'Reserved' ? 'border-warning' : tbl.status === 'Cleaning' ? 'border-purple' : 'border-success'}">
                         <i class="bi bi-grid-3x3-gap fs-2 text-navy mb-1 d-block"></i>
                         <h6 class="fw-bold mb-1 font-heading text-dark fs-6">${tbl.number}</h6>
-                        <small class="text-muted d-block mb-2" style="font-size: 0.72rem; line-height: 1.25;">${tbl.capacity} Seats • ${tbl.location}</small>
+                        <small class="text-muted d-block mb-1" style="font-size: 0.72rem; line-height: 1.25;">${tbl.capacity} Seats • ${tbl.zone || tbl.location}</small>
                         <span class="badge-status ${statusBadge} mb-2">${tbl.status}</span>
 
+                        ${activeOrder ? `
+                            <div class="small fw-bold text-navy mb-1">Bill: ${runningTotal}</div>
+                        ` : ''}
+
                         ${canManage ? `
-                            <div class="dropdown mt-2">
-                                <button class="btn btn-sm btn-outline-secondary w-100 dropdown-toggle py-1" style="font-size: 0.72rem;" data-bs-toggle="dropdown">
-                                    Set Status
-                                </button>
-                                <ul class="dropdown-menu dropdown-menu-end shadow-sm small">
-                                    <li><a class="dropdown-item py-1" href="javascript:void(0)" onclick="BookingsModule.updateTableStatus('${tbl.id}', 'Available')"><span class="badge-status badge-available me-1"></span>Available</a></li>
-                                    <li><a class="dropdown-item py-1" href="javascript:void(0)" onclick="BookingsModule.updateTableStatus('${tbl.id}', 'Reserved')"><span class="badge-status badge-pending me-1"></span>Reserved</a></li>
-                                    <li><a class="dropdown-item py-1" href="javascript:void(0)" onclick="BookingsModule.updateTableStatus('${tbl.id}', 'Occupied')"><span class="badge-status badge-occupied me-1"></span>Occupied</a></li>
-                                </ul>
+                            <div class="d-flex flex-column gap-1 mt-2">
+                                <a href="pos.html" class="btn btn-sm ${activeOrder ? 'btn-gold text-white' : 'btn-outline-navy'} w-100 py-1" style="font-size: 0.72rem;">
+                                    <i class="bi bi-receipt-cutoff me-1"></i>${activeOrder ? 'Active POS' : 'Seat in POS'}
+                                </a>
+                                <div class="dropdown">
+                                    <button class="btn btn-sm btn-outline-secondary w-100 dropdown-toggle py-0" style="font-size: 0.68rem;" data-bs-toggle="dropdown">
+                                        Status
+                                    </button>
+                                    <ul class="dropdown-menu dropdown-menu-end shadow-sm small">
+                                        <li><a class="dropdown-item py-1" href="javascript:void(0)" onclick="BookingsModule.updateTableStatus('${tbl.id}', 'Available')"><span class="badge-status badge-available me-1"></span>Available</a></li>
+                                        <li><a class="dropdown-item py-1" href="javascript:void(0)" onclick="BookingsModule.updateTableStatus('${tbl.id}', 'Reserved')"><span class="badge-status badge-pending me-1"></span>Reserved</a></li>
+                                        <li><a class="dropdown-item py-1" href="javascript:void(0)" onclick="BookingsModule.updateTableStatus('${tbl.id}', 'Occupied')"><span class="badge-status badge-occupied me-1"></span>Occupied</a></li>
+                                        <li><a class="dropdown-item py-1" href="javascript:void(0)" onclick="BookingsModule.updateTableStatus('${tbl.id}', 'Cleaning')"><span class="badge-status badge-cleaning me-1"></span>Turnover</a></li>
+                                    </ul>
+                                </div>
                             </div>
                         ` : ''}
                     </div>
@@ -656,20 +670,12 @@ const BookingsModule = {
                     </div>
                 </div>
 
-                <!-- Price Breakdown box -->
-                <div class="bg-light-subtle p-3 rounded-3 border mb-3">
-                    <div class="d-flex justify-content-between small text-muted mb-1">
-                        <span id="modalStayMathText">1 Night × ${App.formatCurrency(room.pricePerNight)}:</span>
-                        <span id="modalStaySubtotal">${App.formatCurrency(room.pricePerNight)}</span>
-                    </div>
-                    <div class="d-flex justify-content-between small text-muted mb-1">
-                        <span>Tax & Resort Fee (5%):</span>
-                        <span id="modalStayTax">${App.formatCurrency(room.pricePerNight * 0.05)}</span>
-                    </div>
-                    <div class="d-flex justify-content-between fw-bold text-navy fs-6 border-top pt-2">
-                        <span>Total Stay Cost:</span>
-                        <span class="text-gold" id="modalStayTotal">${App.formatCurrency(room.pricePerNight * 1.05)}</span>
-                    </div>
+                <div class="mb-3">
+                    <label class="form-label small fw-semibold text-navy mb-1"><i class="bi bi-credit-card-2-front text-gold me-1"></i>Settlement Method *</label>
+                    <select class="form-select form-select-sm" id="modalRoomPaymentChoice">
+                        <option value="Online">Pay Online Now via Debit / Credit Card Gateway (Instant Guarantee)</option>
+                        <option value="FrontDesk">Pay on Check-In at Front Desk / Concierge</option>
+                    </select>
                 </div>
 
                 <div class="d-flex justify-content-end gap-2">
@@ -747,6 +753,7 @@ const BookingsModule = {
             return;
         }
 
+        const paymentChoice = document.getElementById('modalRoomPaymentChoice').value;
         const subtotal = nights * room.pricePerNight;
         const tax = subtotal * 0.05;
         const totalCost = subtotal + tax;
@@ -766,32 +773,98 @@ const BookingsModule = {
             adults: guests,
             totalCost: Number(totalCost.toFixed(2)),
             paymentStatus: 'Pending',
+            paymentMethod: paymentChoice === 'Online' ? 'Credit / Debit Card' : 'Pay at Front Desk',
+            transactionRef: `PAY_PENDING_${bookingId}`,
             bookingStatus: 'Confirmed',
             createdAt: StorageService.nowString()
         };
-
-        const bookings = StorageService.get(STORAGE_KEYS.ROOM_BOOKINGS, []);
-        bookings.push(newBooking);
-        StorageService.set(STORAGE_KEYS.ROOM_BOOKINGS, bookings);
-
-        // Update room status to Reserved if starting today
-        const todayStr = new Date().toISOString().split('T')[0];
-        if (checkIn === todayStr) {
-            const rIdx = rooms.findIndex(r => r.id === roomId);
-            if (rIdx > -1) {
-                rooms[rIdx].status = 'Reserved';
-                StorageService.set(STORAGE_KEYS.ROOMS, rooms);
-            }
-        }
-
-        App.showToast(`Room ${room.number} booked successfully! ID: ${bookingId}`, 'success');
 
         const modalEl = document.getElementById('bookStayModal');
         const modal = bootstrap.Modal.getInstance(modalEl);
         if (modal) modal.hide();
 
-        this.renderRoomsGrid();
-        this.renderRoomBookingsList();
+        if (paymentChoice === 'Online') {
+            // Launch Debit/Credit Card Gateway
+            PaymentService.openPaymentModal({
+                id: bookingId,
+                total: totalCost,
+                description: `Suite ${room.number} - ${room.type} (${nights} Night${nights > 1 ? 's' : ''})`,
+                customerName: name,
+                customerEmail: email,
+                customerPhone: phone,
+                category: 'Room Booking'
+            }, (res) => {
+                // Payment Successful
+                newBooking.paymentStatus = 'Successful';
+                newBooking.paymentMethod = res.method || 'Credit Card';
+                newBooking.transactionRef = res.transactionRef;
+
+                const bookings = StorageService.get(STORAGE_KEYS.ROOM_BOOKINGS, []);
+                bookings.push(newBooking);
+                StorageService.set(STORAGE_KEYS.ROOM_BOOKINGS, bookings);
+
+                // Update room status
+                if (checkIn === new Date().toISOString().split('T')[0]) {
+                    const rIdx = rooms.findIndex(r => r.id === roomId);
+                    if (rIdx > -1) {
+                        rooms[rIdx].status = 'Reserved';
+                        StorageService.set(STORAGE_KEYS.ROOMS, rooms);
+                    }
+                }
+
+                App.showToast(`Suite ${room.number} reserved & paid! Folio: ${bookingId}`, 'success');
+                BookingsModule.renderRoomsGrid();
+                BookingsModule.renderRoomBookingsList();
+                PaymentService.openReceiptModal(bookingId);
+            }, (err) => {
+                App.showToast(err.reason || 'Payment was cancelled. Room reservation not finalized.', 'error');
+            });
+        } else {
+            // Pay on Arrival
+            newBooking.paymentStatus = 'Pending';
+            newBooking.paymentMethod = 'Pay at Front Desk';
+            
+            const bookings = StorageService.get(STORAGE_KEYS.ROOM_BOOKINGS, []);
+            bookings.push(newBooking);
+            StorageService.set(STORAGE_KEYS.ROOM_BOOKINGS, bookings);
+
+            if (checkIn === new Date().toISOString().split('T')[0]) {
+                const rIdx = rooms.findIndex(r => r.id === roomId);
+                if (rIdx > -1) {
+                    rooms[rIdx].status = 'Reserved';
+                    StorageService.set(STORAGE_KEYS.ROOMS, rooms);
+                }
+            }
+
+            App.showToast(`Room ${room.number} booked successfully! Folio: ${bookingId}`, 'success');
+            this.renderRoomsGrid();
+            this.renderRoomBookingsList();
+        }
+    },
+
+    // Settle Room Booking Online via Payment Gateway
+    payRoomBookingOnline: function (bookingId) {
+        const bookings = StorageService.get(STORAGE_KEYS.ROOM_BOOKINGS, []);
+        const b = bookings.find(item => item.id === bookingId);
+        if (!b) return;
+
+        PaymentService.openPaymentModal({
+            id: b.id,
+            total: b.totalCost,
+            description: `Suite ${b.roomNumber} - ${b.roomType} (${b.nights} Night${b.nights > 1 ? 's' : ''})`,
+            customerName: b.guestName,
+            customerEmail: b.guestEmail,
+            customerPhone: b.guestPhone,
+            category: 'Room Booking'
+        }, (res) => {
+            StorageService.updateRoomBookingPayment(bookingId, 'Successful', res.transactionRef, res.method);
+            App.showToast(`Folio ${bookingId} settled successfully!`, 'success');
+            BookingsModule.renderRoomsGrid();
+            BookingsModule.renderRoomBookingsList();
+            PaymentService.openReceiptModal(bookingId);
+        }, (err) => {
+            App.showToast(err.reason || 'Payment could not be settled.', 'error');
+        });
     },
 
     // Render Room Bookings List (Check-in/out table for Reception/Admin)
@@ -836,11 +909,16 @@ const BookingsModule = {
                         Action
                     </button>
                     <ul class="dropdown-menu dropdown-menu-end shadow-sm small">
+                        ${b.paymentStatus !== 'Successful' ? `
+                            <li><a class="dropdown-item py-1 text-success fw-semibold" href="javascript:void(0)" onclick="BookingsModule.payRoomBookingOnline('${b.id}')"><i class="bi bi-credit-card me-1"></i>Settle via Card Gateway</a></li>
+                            <li><hr class="dropdown-divider my-1"></li>
+                        ` : ''}
+                        <li><a class="dropdown-item py-1" href="javascript:void(0)" onclick="PaymentService.openReceiptModal('${b.id}')"><i class="bi bi-receipt me-1"></i>Tax Invoice / Folio</a></li>
                         ${b.bookingStatus === 'Confirmed' ? `
-                            <li><a class="dropdown-item py-1 text-success fw-semibold" href="javascript:void(0)" onclick="BookingsModule.checkInGuest('${b.id}')"><i class="bi bi-box-arrow-in-right me-1"></i>Check-In Guest</a></li>
+                            <li><a class="dropdown-item py-1 text-primary fw-semibold" href="javascript:void(0)" onclick="BookingsModule.checkInGuest('${b.id}')"><i class="bi bi-box-arrow-in-right me-1"></i>Check-In Guest</a></li>
                         ` : ''}
                         ${b.bookingStatus === 'Occupied' ? `
-                            <li><a class="dropdown-item py-1 text-primary fw-semibold" href="javascript:void(0)" onclick="BookingsModule.checkOutGuest('${b.id}')"><i class="bi bi-box-arrow-left me-1"></i>Check-Out Guest</a></li>
+                            <li><a class="dropdown-item py-1 text-info fw-semibold" href="javascript:void(0)" onclick="BookingsModule.checkOutGuest('${b.id}')"><i class="bi bi-box-arrow-left me-1"></i>Check-Out Guest</a></li>
                         ` : ''}
                         ${b.bookingStatus !== 'Cancelled' && b.bookingStatus !== 'Checked-Out' ? `
                             <li><hr class="dropdown-divider my-1"></li>
@@ -849,9 +927,19 @@ const BookingsModule = {
                     </ul>
                 </div>
             ` : `
-                ${b.bookingStatus === 'Confirmed' ? `
-                    <button type="button" class="btn btn-sm btn-outline-danger" onclick="BookingsModule.cancelRoomBooking('${b.id}')">Cancel</button>
-                ` : '<span class="text-muted small">None</span>'}
+                <div class="d-flex gap-1 justify-content-end">
+                    ${b.paymentStatus !== 'Successful' ? `
+                        <button type="button" class="btn btn-sm btn-gold py-0 px-2" style="font-size:0.75rem;" onclick="BookingsModule.payRoomBookingOnline('${b.id}')">
+                            <i class="bi bi-credit-card me-1"></i>Pay
+                        </button>
+                    ` : ''}
+                    <button type="button" class="btn btn-sm btn-outline-secondary py-0 px-2" style="font-size:0.75rem;" onclick="PaymentService.openReceiptModal('${b.id}')">
+                        <i class="bi bi-receipt me-1"></i>Folio
+                    </button>
+                    ${b.bookingStatus === 'Confirmed' ? `
+                        <button type="button" class="btn btn-sm btn-outline-danger py-0 px-2" style="font-size:0.75rem;" onclick="BookingsModule.cancelRoomBooking('${b.id}')">Cancel</button>
+                    ` : ''}
+                </div>
             `;
 
             // Desktop Table Row

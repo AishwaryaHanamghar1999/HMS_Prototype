@@ -7,61 +7,60 @@ A modern, professional, fully responsive Hotel Management System prototype built
 
 ## 🌟 Key Features
 
-1. **Role-Based Access Control (RBAC)**:
-   - **5 Predefined Demo Accounts** with tailored dashboards, sidebar navigation, and strict JavaScript permission enforcement.
-   - **One-Click Demo Role Switcher**: Available in the topbar dropdown and login page for frictionless evaluation.
+1. **5 Primary Logins & Role-Based Access Control (RBAC)**:
+   - **5 Predefined Primary Accounts** featuring custom executive and operational dashboards:
+     - **1. Admin**: Master administrative control across rooms, staff, POS, activities, inventory, and global settings.
+     - **2. Purchase**: Procurement and supply chain management, certified luxury resort suppliers, purchase orders pipeline, delivery schedules, and Goods Received Note (GRN) inventory intake.
+     - **3. Accounts**: Financial payments ledger, Credit Card vs. Debit Card transaction audit, gateway MDR fee deductions, 1-click batch gateway reconciliation, and CSV export.
+     - **4. Manager**: Front-of-house and back-of-house floor operations, kitchen order queues, room availability oversight, and staff supervision.
+     - **5. MD (Managing Director)**: High-level executive boardroom dashboard with real-time Net Operating Profit (42.4% margin), RevPAR ($492), ADR ($545), 90.2% occupancy, VIP folio sign-offs, and department revenue split.
+     *(Front Desk Receptionist, Guest Customer, and Waiter accounts are also readily available for complete resort testing).*
+   - **One-Click Demo Role Switcher**: Available directly on `login.html` and in the navigation topbar for frictionless testing.
 
-2. **Customer Website & Fine Dining Online Ordering**:
-   - **Luxury Landing Page (`index.html`)**: Hero section, chef's signature dishes, suite showcase, interactive guest feedback, and hotel concierge details.
-   - **Interactive Menu (`menu.html`)**: Category filters (*Starters, Main Course, Snacks, Beverages, Desserts*), live search, vegetarian toggle, quantity selectors, and real-time stock counters with low-stock alerts.
-   - **Persistent Cart (`cart.html`)**: Live quantity adjustments, line subtotals, configurable 5% tax calculations, and clear cart options.
-   - **Multi-Mode Checkout (`checkout.html`)**: Supports **Dine-In** (with table selection), **Room Delivery** (with suite number), or **Takeaway / Pickup**.
+2. **Resort Activities & Experiences Prebooking Portal (`activities.html`)**:
+   - **Curated Luxury Experiences**: Prebook private catamaran charters, botanical aromatherapy spas, scuba diving reef excursions, candlelight beachfront dinners, golf masterclasses, and helicopter island tours.
+   - **Category Filters & Search**: Filter by *Spa & Wellness, Ocean & Watersports, Culinary Masterclasses, Sports & Adventure, Romantic Experiences*.
+   - **Interactive Prebooking Modal**: Real-time duration math, slot scheduling, guest counter, and subtotal + 5% resort tax computation.
+   - **Instant Digital Voucher Passes**: Scalloped pass generator featuring unique voucher ID (`ACT-XXXX`), QR code pass validation, and booking cancellation safeguards.
 
-3. **Payment Gateway Module (Razorpay Simulation)**:
-   - **Razorpay Sandbox Checkout Modal**: Simulates online Card, UPI QR, and Net Banking payments.
-   - **Offline Options**: Pay at Counter / Room Folio Charge and Cash on Delivery.
-   - **Printable Tax Invoices**: Formatted with print styles (`@media print`) and printable via `window.print()`.
-   - *Architecture Notice: Clearly separates demo frontend simulation from production backend payment verification.*
+3. **Multi-Channel Payment Gateway Engine (`js/payments.js`)**:
+   - **Credit Card Gateway**: Interactive card visual mockup with live typing preview (card number, cardholder name, expiry), 1-click test cards (Visa Platinum, Mastercard World, Amex Centurion), and CVV masking.
+   - **Debit Card Gateway**: Direct bank debit settlement simulation supporting RuPay Debit, HDFC Visa Debit, and Mastercard Debit.
+   - **UPI / QR Code & Net Banking**: Instant QR payment simulation and one-click bank selection (HDFC, SBI, ICICI, Axis).
+   - **3D Secure / Bank OTP Verification Modal**: Realistic two-factor SMS OTP verification with countdown timer, auto-fill `123456`, and transaction settlement simulation.
+   - **Automated Ledgering & Printable Tax Receipts**: Saves all transactions to `hotel_payments` with printable tax invoices (`@media print`).
 
-4. **Restaurant Table Booking (`table-booking.html`)**:
-   - **Double-Booking Collision Prevention**: Rejects overlapping bookings for the same table and time slot.
-   - **Seating Capacity Validation**: Enforces party size &le; table seating capacity.
-   - **Live Floor Status Map**: Tracks *Available*, *Reserved*, and *Occupied* tables with status controls for staff.
-
-5. **Hotel Room Booking & Housekeeping (`room-booking.html` & `rooms.html`)**:
-   - **Suite Reservation Engine**: Automatic night calculation, stay subtotal, 5% resort tax, and instant confirmation.
+4. **Hotel Room Booking & Housekeeping (`room-booking.html` & `rooms.html`)**:
+   - **Online Suites Booking**: Instant date range duration calculation, nightly rate math, and integrated online card gateway settlement.
    - **Front Desk Workflow**: Receptionist and Admin can check guests in (*Occupied*) and out (*Cleaning turnover*).
    - **Room Inventory**: Filter by category (*Standard, Deluxe, Suite*) and adjust room statuses.
 
-6. **Kitchen Inventory & Stock Management (`inventory.html`)**:
-   - Automatically decrements stock when food orders are confirmed.
-   - Low-stock warning badges (&le; 5 units) and automatic *Sold Out* disablement at 0 units.
-   - Quick +5 stock restock buttons and full dish price/title editor.
+5. **Customer Website & Fine Dining Online Ordering**:
+   - **Luxury Landing Page (`index.html`)**: Michelin hero section, 5 role credentials, highlights bar, suites showcase, curated activities showcase, and guest feedback.
+   - **Interactive Menu (`menu.html`)**: Category filters, vegetarian toggle, quantity selectors, and stock levels.
+   - **Persistent Cart (`cart.html`) & Multi-Mode Checkout (`checkout.html`)**: Dine-In (with table), Room Delivery (with suite number), or Takeaway, integrated with the Credit/Debit Card Gateway.
 
-7. **Staff Administration (`staff.html`)**:
-   - Admin management of internal employees, role assignments, and active/inactive status toggling.
+6. **Interactive Restaurant POS (`pos.html`) & Kitchen Display System (`kds.html`)**:
+   - High-speed touch POS with 10 tables across 5 zones, running folios, cooking modifiers, and real-time KDS tickets.
 
-8. **Live Financial & Operational Reports (`reports.html`)**:
-   - All analytics computed directly from saved Local Storage records (no hardcoded metrics).
-   - Gross revenue, dining vs room revenue breakdown, tax collections, top-selling dishes, and cancellation audit logs.
-
-9. **Mobile-First Responsiveness**:
-   - **Desktop**: Full left sidebar with luxury gold accents.
-   - **Mobile**: Fixed bottom navigation bar with icons and labels + offcanvas drawer for "More" pages. Content padding ensures no buttons are covered.
+7. **Financial & Operational Intelligence (`reports.html`)**:
+   - Live revenue calculations combining Dining, Hotel Suites, and Resort Activities Prebookings with 5% tax audits.
 
 ---
 
 ## 🔑 Predefined Demo Login Credentials
 
-| Role | Demo Email | Demo Password | Primary Permissions |
+| Role | Demo Email | Demo Password | Primary Permissions & Features |
 | :--- | :--- | :--- | :--- |
-| **Admin** | `admin@hotel.demo` | `Admin@123` | Full access across all 14 modules, staff, inventory, payments, reports |
-| **Manager** | `manager@hotel.demo` | `Manager@123` | Operations, kitchen order queue, table & room availability, reports |
-| **Receptionist** | `reception@hotel.demo` | `Reception@123` | Front desk guest check-in/out, room bookings, table reservations |
-| **Waiter** | `waiter@hotel.demo` | `Waiter@123` | Floor tables, punch dine-in orders, update kitchen preparation stages |
-| **Customer** | `customer@hotel.demo` | `Customer@123` | Browse menu, order food, book tables & suites, view own order history |
+| **1. Admin** | `admin@hotel.demo` | `Admin@123` | Full access across all 15 modules, staff, inventory, payments, reports |
+| **2. Purchase** | `purchase@hotel.demo` | `Purchase@123` | Certified luxury suppliers, purchase order procurement pipeline, goods received (GRN) intake |
+| **3. Accounts** | `accounts@hotel.demo` | `Accounts@123` | Financial payments ledger, gateway MDR reconciliation, credit vs debit audit, CSV export |
+| **4. Manager** | `manager@hotel.demo` | `Manager@123` | Floor operations, room status management, live KDS kitchen queues, staff coordination |
+| **5. MD (Director)** | `md@hotel.demo` | `Md@123` | Executive boardroom analytics, Net Operating Margin, RevPAR, ADR, VIP guest folios |
 
-> **Quick Testing Tip**: On `login.html`, click any of the 5 role chips to instantly autofill credentials and sign in with a single click. Once logged in, use the **Switch Demo Role** dropdown in the top header to effortlessly test other roles without logging out.
+*(Also available: **Receptionist** `reception@hotel.demo` / `Reception@123`, **Customer** `customer@hotel.demo` / `Customer@123`, and **Waiter** `waiter@hotel.demo` / `Waiter@123`)*
+
+> **Quick Testing Tip**: On `login.html`, click any of the 5 numbered role buttons (`1. Admin`, `2. Purchase`, `3. Accounts`, `4. Manager`, `5. MD`) to instantly auto-fill credentials and sign in with a single click. You can also quick-switch between roles at any time from the topbar avatar dropdown.
 
 ---
 
@@ -70,7 +69,7 @@ A modern, professional, fully responsive Hotel Management System prototype built
 Because this is a pure HTML5/CSS3/JavaScript prototype with no backend server or npm build steps required, you can run it in any modern web browser:
 
 ### Option 1: Direct File Launch
-Double-click `index.html` or open `file:///c:/Users/Admin/Documents/Prototypes/HMS/index.html` directly in Google Chrome, Microsoft Edge, Mozilla Firefox, or Safari.
+Double-click `index.html` or open `file:///c:/Users/Admin/Documents/Prototypes/HMS_Prototype/index.html` directly in Google Chrome, Microsoft Edge, Mozilla Firefox, or Safari.
 
 ### Option 2: Using Any Lightweight HTTP Server
 If you prefer running through `localhost`:
@@ -88,15 +87,18 @@ Then navigate to `http://localhost:8000`.
 ## 💾 Local Storage Architecture
 
 Data is stored persistently in the user's browser under the following keys:
-- `hotel_users`: User accounts and roles.
+- `hotel_users`: User accounts and roles (Admin, MD, Accounts, Receptionist, Customer, Manager, Waiter).
 - `hotel_session`: Current authenticated user session.
-- `hotel_menu`: Culinary items, prices, dietary types, and stock levels.
-- `hotel_cart`: User's active shopping cart items and quantities.
-- `hotel_orders`: Order histories, statuses (*Pending, Confirmed, Preparing, Ready, Delivered, Cancelled*), and payment details.
-- `hotel_tables`: Restaurant tables, locations, capacities, and floor statuses.
-- `hotel_table_bookings`: Table reservations with dates, times, and guests.
+- `hotel_activities`: Catalog of resort leisure experiences (Spa, Catamaran, Scuba, Golf, etc.).
+- `hotel_activity_bookings`: Prebooked activity tickets and digital voucher passes.
+- `hotel_payments`: Multi-channel gateway ledger (Credit Card, Debit Card, UPI, Net Banking, status, card brand, last4, MDR fees).
 - `hotel_rooms`: Hotel suites, nightly rates, capacities, and statuses (*Available, Occupied, Reserved, Cleaning*).
 - `hotel_room_bookings`: Hotel stay folios, check-in/out dates, and guest records.
+- `hotel_menu`: Culinary items, prices, dietary types, and stock levels.
+- `hotel_cart`: User's active shopping cart items and quantities.
+- `hotel_orders`: Dining orders, statuses, and payment details.
+- `hotel_tables`: Restaurant tables, locations, capacities, and floor statuses.
+- `hotel_table_bookings`: Table reservations with dates, times, and guests.
 - `hotel_feedback`: Customer ratings and reviews.
 - `hotel_settings`: Hotel metadata, tax rates (5%), currency symbol, and contact info.
 

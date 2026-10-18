@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resort Activities & Leisure Prebooking | The Grand Aurelia</title>
+    <!-- Bootstrap 5.3 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <!-- Custom Stylesheet -->
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+    <!-- Public Navigation Bar -->
+    <nav class="public-navbar">
+        <div class="container d-flex align-items-center justify-content-between">
+            <a href="index.html" class="d-flex align-items-center gap-2 text-decoration-none text-white">
+                <i class="bi bi-stars text-gold fs-3"></i>
+                <div>
+                    <span class="font-heading fw-bold fs-4 text-white d-block" style="letter-spacing: 0.05em; line-height: 1;">THE GRAND AURELIA</span>
+                    <small class="text-gold" style="font-size: 0.65rem; letter-spacing: 0.15em;">RESORT EXPERIENCES</small>
+                </div>
+            </a>
+
+            <!-- Desktop Nav Links -->
+            <div class="d-none d-lg-flex align-items-center gap-1">
+                <a href="index.html" class="nav-link">Home</a>
+                <a href="menu.html" class="nav-link">Food Menu</a>
+                <a href="room-booking.html" class="nav-link">Luxury Suites</a>
+                <a href="activities.html" class="nav-link active">Activities Prebooking</a>
+                <a href="table-booking.html" class="nav-link">Reserve Table</a>
+                <a href="orders.html" class="nav-link">Track Orders</a>
+            </div>
+
+            <!-- Right Controls: Cart & Profile / Login -->
+            <div class="d-flex align-items-center gap-3">
+                <a href="cart.html" class="btn btn-outline-light btn-sm rounded-pill position-relative px-3 py-1 d-flex align-items-center gap-2">
+                    <i class="bi bi-bag"></i>
+                    <span class="d-none d-sm-inline">Cart</span>
+                    <span class="cart-badge badge rounded-pill bg-warning text-dark" style="font-size: 0.7rem; display: none;">0</span>
+                </a>
+
+                <div class="user-profile-widget">
+                    <!-- Populated dynamically by app.js -->
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Header -->
+    <section class="py-5 bg-navy-dark text-white position-relative" style="background: linear-gradient(180deg, rgba(9, 14, 23, 0.88) 0%, rgba(15, 23, 42, 0.96) 100%), url('https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=1920&q=80') center/cover no-repeat;">
+        <div class="container text-center py-4">
+            <div class="d-inline-flex align-items-center gap-2 bg-dark bg-opacity-50 px-3 py-1 rounded-pill border border-warning-subtle mb-3">
+                <i class="bi bi-compass text-gold"></i>
+                <span class="small text-gold fw-semibold" style="letter-spacing: 0.05em;">EXCLUSIVE RESORT CURATIONS 2026</span>
+            </div>
+            <h1 class="font-heading display-5 fw-bold text-white mb-2">Activities & Experiences Prebooking</h1>
+            <p class="text-white-50 mx-auto small" style="max-width: 680px;">
+                Pre-reserve your private catamaran charters, aromatherapy botanical spas, deep-sea coral diving expeditions, and Michelin culinary ateliers with instant debit & credit card payment authorization.
+            </p>
+            <div class="d-flex justify-content-center gap-2 flex-wrap mt-3">
+                <span class="badge bg-light text-dark px-3 py-2"><i class="bi bi-credit-card-2-front text-primary me-1"></i>Credit & Debit Cards Accepted</span>
+                <span class="badge bg-light text-dark px-3 py-2"><i class="bi bi-qr-code text-warning me-1"></i>Instant Digital Voucher Pass</span>
+                <span class="badge bg-light text-dark px-3 py-2"><i class="bi bi-shield-check text-success me-1"></i>100% Free Concierge Cancellation</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content Area -->
+    <main class="py-5">
+        <div class="container">
+            
+            <!-- Category Filter Bar -->
+            <div class="d-flex flex-wrap align-items-center justify-content-between gap-3 mb-4 pb-2 border-bottom">
+                <div class="d-flex flex-wrap gap-2" id="activityCategoryFilters">
+                    <button type="button" class="btn btn-sm btn-outline-secondary filter-btn active" onclick="ActivitiesApp.filterCategory('All')">
+                        All Experiences
+                    </button>
+                    <button type="button" class="btn btn-sm btn-outline-secondary filter-btn" onclick="ActivitiesApp.filterCategory('Spa & Wellness')">
+                        <i class="bi bi-flower1 me-1"></i>Spa & Wellness
+                    </button>
+                    <button type="button" class="btn btn-sm btn-outline-secondary filter-btn" onclick="ActivitiesApp.filterCategory('Ocean & Watersports')">
+                        <i class="bi bi-water me-1"></i>Ocean & Watersports
+                    </button>
+                    <button type="button" class="btn btn-sm btn-outline-secondary filter-btn" onclick="ActivitiesApp.filterCategory('Culinary Masterclasses')">
+                        <i class="bi bi-cup-hot me-1"></i>Culinary Workshops
+                    </button>
+                    <button type="button" class="btn btn-sm btn-outline-secondary filter-btn" onclick="ActivitiesApp.filterCategory('Sports & Adventure')">
+                        <i class="bi bi-geo-alt me-1"></i>Sports & Tours
+                    </button>
+                    <button type="button" class="btn btn-sm btn-outline-secondary filter-btn" onclick="ActivitiesApp.filterCategory('Romantic Experiences')">
+                        <i class="bi bi-heart me-1"></i>Romantic Dinners
+                    </button>
+                </div>
+
+                <div class="d-flex align-items-center gap-2">
+                    <span class="text-muted small">Search:</span>
+                    <input type="text" class="form-control form-control-sm" id="activitySearchInput" placeholder="Filter by name..." oninput="ActivitiesApp.searchActivities(this.value)" style="max-width: 200px;">
+                </div>
+            </div>
+
+            <!-- Activities Cards Grid -->
+            <div class="row g-4 mb-5" id="activitiesCardsGrid">
+                <!-- Injected dynamically by ActivitiesApp.renderGrid() -->
+            </div>
+
+            <!-- Active Guest Prebookings / Experience Passes -->
+            <div class="card-hotel p-4 mb-4 bg-white border">
+                <div class="d-flex flex-column flex-sm-row justify-content-between align-items-start align-items-sm-center gap-2 mb-3">
+                    <div>
+                        <h4 class="font-heading fw-bold text-navy mb-0"><i class="bi bi-ticket-perforated text-gold me-2"></i>My Confirmed Activity Passes & Vouchers</h4>
+                        <small class="text-muted">Digital access passes with instant QR check-in at resort concierge stations</small>
+                    </div>
+                    <span class="badge bg-gold text-dark font-monospace">LIVE CONCIERGE ACCESS</span>
+                </div>
+
+                <div class="table-responsive d-none d-md-block">
+                    <table class="table table-hover align-middle mb-0">
+                        <thead class="table-light small">
+                            <tr>
+                                <th>Voucher Ref</th>
+                                <th>Activity Experience</th>
+                                <th>Guest Name</th>
+                                <th>Reserved Slot</th>
+                                <th>Guests</th>
+                                <th>Total Cost</th>
+                                <th>Payment Method</th>
+                                <th>Pass Status</th>
+                                <th class="text-end">Ticket Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="activityBookingsTableBody">
+                            <!-- Populated dynamically -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Mobile Card List -->
+                <div class="d-md-none" id="activityBookingsMobileList">
+                    <!-- Populated dynamically -->
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Modal: Prebook Experience & Payment Gateway -->
+    <div class="modal fade" id="prebookExperienceModal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content rounded-4 border-0 shadow-lg overflow-hidden">
+                <div class="modal-header bg-navy-primary text-white">
+                    <div class="d-flex align-items-center gap-2">
+                        <i class="bi bi-compass text-gold fs-4"></i>
+                        <div>
+                            <h5 class="modal-title font-heading mb-0 text-white" id="modalPrebookTitle">Prebook Resort Activity</h5>
+                            <small class="text-gold" style="font-size:0.75rem;">Guaranteed Slot Reservation</small>
+                        </div>
+                    </div>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+
+                <div class="modal-body p-4 bg-white" id="prebookModalBody">
+                    <!-- Form dynamically populated -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: Digital Experience Boarding Pass / Voucher -->
+    <div class="modal fade" id="voucherTicketModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content rounded-4 border-0 shadow-lg overflow-hidden">
+                <div class="modal-header bg-navy-primary text-white py-3 no-print">
+                    <h5 class="modal-title font-heading mb-0 text-white"><i class="bi bi-ticket-perforated text-gold me-2"></i>Resort Digital Experience Pass</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body p-4" id="voucherTicketBody">
+                    <!-- Populated dynamically -->
+                </div>
+                <div class="modal-footer bg-light no-print d-flex justify-content-between p-3 border-top">
+                    <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-gold btn-sm px-3" onclick="window.print()">
+                        <i class="bi bi-printer me-1"></i>Print Pass
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap 5 JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- App Modules -->
+    <script src="js/storage.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/payments.js"></script>
+    <script src="js/orders.js"></script>
+    <script src="js/bookings.js"></script>
+    <script src="js/app.js"></script>
+
+    <!-- Activities Page Logic -->
+    <script>
+        const ActivitiesApp = {
+            activeCategory: 'All',
+            searchTerm: '',
+            activeActivityId: null,
+
+            init: function () {
+                App.init();
+                this.renderGrid();
+                this.renderBookingsList();
+            },
+
+            filterCategory: function (category) {
+                this.activeCategory = category;
+                document.querySelectorAll('#activityCategoryFilters .filter-btn').forEach(btn => {
+                    if (btn.textContent.trim().includes(category) || (category === 'All' && btn.textContent.trim().startsWith('All'))) {
+                        btn.classList.add('active');
+                    } else {
+                        btn.classList.remove('active');
+                    }
+                });
+                this.renderGrid();
+            },
+
+            searchActivities: function (term) {
+                this.searchTerm = term.toLowerCase().trim();
+                this.renderGrid();
+            },
+
+            renderGrid: function () {
+                const container = document.getElementById('activitiesCardsGrid');
+                if (!container) return;
+
+                const activities = StorageService.get(STORAGE_KEYS.ACTIVITIES, []);
+                let filtered = activities;
+
+                if (this.activeCategory !== 'All') {
+                    filtered = filtered.filter(a => a.category.toLowerCase().includes(this.activeCategory.toLowerCase()));
+                }
+
+                if (this.searchTerm) {
+                    filtered = filtered.filter(a => 
+                        a.name.toLowerCase().includes(this.searchTerm) ||
+                        a.description.toLowerCase().includes(this.searchTerm) ||
+                        a.category.toLowerCase().includes(this.searchTerm)
+                    );
+                }
+
+                if (filtered.length === 0) {
+                    container.innerHTML = `
+                        <div class="col-12 text-center py-5">
+                            <i class="bi bi-compass text-muted display-4"></i>
+                            <h5 class="fw-bold text-navy mt-3">No experiences found</h5>
+                            <p class="text-muted small">Try switching categories or clearing search keywords.</p>
+                            <button class="btn btn-sm btn-outline-gold" onclick="ActivitiesApp.filterCategory('All')">Show All Experiences</button>
+                        </div>
+                    `;
+                    return;
+                }
+
+                let html = '';
+                filtered.forEach(act => {
+                    const inclusionsChips = (act.inclusions || []).map(inc => `
+                        <span class="badge bg-light text-dark border me-1 mb-1" style="font-size:0.7rem;">
+                            <i class="bi bi-check2 text-gold me-1"></i>${inc}
+                        </span>
+                    `).join('');
+
+                    const slotsPreview = (act.slots || []).slice(0, 3).map(s => `
+                        <span class="badge bg-navy-surface text-white" style="font-size:0.65rem;">${s}</span>
+                    `).join(' ');
+
+                    html += `
+                        <div class="col-12 col-md-6 col-lg-4 mb-4">
+                            <div class="activity-card">
+                                <div class="activity-card-img-wrap">
+                                    <img src="${act.image}" alt="${act.name}">
+                                    <div class="position-absolute top-0 start-0 m-2">
+                                        <span class="badge bg-gold text-dark shadow-sm fw-semibold">${act.category}</span>
+                                    </div>
+                                    <div class="position-absolute top-0 end-0 m-2">
+                                        <span class="badge bg-dark bg-opacity-75 text-white shadow-sm font-monospace">
+                                            <i class="bi bi-clock me-1"></i>${act.duration}
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <div class="p-4 d-flex flex-column flex-grow-1">
+                                    <div class="d-flex justify-content-between align-items-start mb-2">
+                                        <h5 class="fw-bold font-heading text-navy mb-0" style="line-height:1.3;">${act.name}</h5>
+                                        <div class="text-end flex-shrink-0 ms-2">
+                                            <span class="fs-5 fw-bold text-gold">${App.formatCurrency(act.pricePerPerson)}</span>
+                                            <small class="text-muted d-block" style="font-size:0.75rem;">/ person</small>
+                                        </div>
+                                    </div>
+
+                                    <p class="small text-muted mb-3" style="font-size:0.83rem;">
+                                        ${act.description}
+                                    </p>
+
+                                    <div class="mb-3">
+                                        <small class="text-uppercase fw-bold text-navy d-block mb-1" style="font-size:0.68rem; letter-spacing:0.05em;">Includes:</small>
+                                        <div>${inclusionsChips}</div>
+                                    </div>
+
+                                    <div class="mb-3 pt-2 border-top">
+                                        <small class="text-muted d-block mb-1" style="font-size:0.7rem;">Available Slots:</small>
+                                        <div class="d-flex gap-1 flex-wrap">${slotsPreview}</div>
+                                    </div>
+
+                                    <div class="mt-auto pt-3 border-top d-flex justify-content-between align-items-center">
+                                        <small class="text-muted"><i class="bi bi-people me-1"></i>Max ${act.maxParticipants} Guests</small>
+                                        <button type="button" class="btn btn-gold btn-sm px-3" onclick="ActivitiesApp.openPrebookModal('${act.id}')">
+                                            <i class="bi bi-calendar-plus me-1"></i>Prebook Now
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                });
+
+                container.innerHTML = html;
+            },
+
+            // Open Prebooking Modal
+            openPrebookModal: function (actId) {
+                const activities = StorageService.get(STORAGE_KEYS.ACTIVITIES, []);
+                const act = activities.find(a => a.id === actId);
+                if (!act) return;
+
+                this.activeActivityId = actId;
+                const user = AuthService.getCurrentUser();
+
+                const todayStr = new Date().toISOString().split('T')[0];
+                const slotsOptions = (act.slots || ['Morning', 'Afternoon']).map(s => `
+                    <option value="${s}">${s}</option>
+                `).join('');
+
+                const modalBody = `
+                    <div class="row g-4">
+                        <div class="col-12 col-md-5">
+                            <img src="${act.image}" class="rounded-3 w-100 shadow-sm mb-3" style="height: 180px; object-fit: cover;">
+                            <span class="badge bg-gold text-dark mb-1">${act.category}</span>
+                            <h5 class="fw-bold font-heading text-navy">${act.name}</h5>
+                            <p class="small text-muted mb-2">${act.duration} • Maximum ${act.maxParticipants} participants</p>
+                            
+                            <div class="p-3 bg-light rounded-3 border">
+                                <div class="d-flex justify-content-between small text-muted mb-1">
+                                    <span>Rate per Guest:</span>
+                                    <strong>${App.formatCurrency(act.pricePerPerson)}</strong>
+                                </div>
+                                <div class="d-flex justify-content-between small text-muted mb-1">
+                                    <span>Resort Tax (5%):</span>
+                                    <span id="pbTaxPreview">${App.formatCurrency(act.pricePerPerson * 0.05)}</span>
+                                </div>
+                                <div class="d-flex justify-content-between fw-bold text-navy fs-6 border-top pt-2">
+                                    <span>Total Payable:</span>
+                                    <span class="text-gold" id="pbTotalPreview">${App.formatCurrency(act.pricePerPerson * 1.05)}</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-12 col-md-7">
+                            <form id="activityBookingForm" onsubmit="event.preventDefault(); ActivitiesApp.handleBookingSubmit();">
+                                
+                                <div class="row g-2 mb-2">
+                                    <div class="col-6">
+                                        <label class="form-label small fw-semibold text-navy mb-1">Select Date *</label>
+                                        <input type="date" class="form-control form-control-sm" id="pbDateInput" value="${todayStr}" min="${todayStr}" required>
+                                    </div>
+                                    <div class="col-6">
+                                        <label class="form-label small fw-semibold text-navy mb-1">Time Slot *</label>
+                                        <select class="form-select form-select-sm" id="pbSlotSelect">
+                                            ${slotsOptions}
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="row g-2 mb-2">
+                                    <div class="col-6">
+                                        <label class="form-label small fw-semibold text-navy mb-1">Guests / Participants *</label>
+                                        <input type="number" class="form-control form-control-sm" id="pbGuestsInput" value="1" min="1" max="${act.maxParticipants}" required oninput="ActivitiesApp.recalculatePrice()">
+                                    </div>
+                                    <div class="col-6">
+                                        <label class="form-label small fw-semibold text-navy mb-1">Payment Method *</label>
+                                        <select class="form-select form-select-sm" id="pbPaymentChoice">
+                                            <option value="Online">Debit / Credit Card (Gateway)</option>
+                                            <option value="Counter">Pay at Hotel Concierge</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="mb-2">
+                                    <label class="form-label small fw-semibold text-navy mb-1">Lead Guest Full Name *</label>
+                                    <input type="text" class="form-control form-control-sm" id="pbGuestName" value="${user ? user.name : 'Eleanor Bennett'}" required>
+                                </div>
+
+                                <div class="row g-2 mb-2">
+                                    <div class="col-6">
+                                        <label class="form-label small fw-semibold text-navy mb-1">Email Address *</label>
+                                        <input type="email" class="form-control form-control-sm" id="pbGuestEmail" value="${user ? user.email : 'customer@hotel.demo'}" required>
+                                    </div>
+                                    <div class="col-6">
+                                        <label class="form-label small fw-semibold text-navy mb-1">Phone Number *</label>
+                                        <input type="tel" class="form-control form-control-sm" id="pbGuestPhone" value="${user && user.phone ? user.phone : '+1 (555) 019-8821'}" required>
+                                    </div>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label small fw-semibold text-navy mb-1">Special Preferences or Requests</label>
+                                    <textarea class="form-control form-control-sm" id="pbNotes" rows="2" placeholder="e.g. Anniversary celebration, dietary specifics, shoe size..."></textarea>
+                                </div>
+
+                                <div class="d-flex justify-content-end gap-2 pt-2 border-top">
+                                    <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">Cancel</button>
+                                    <button type="submit" class="btn btn-gold btn-sm px-4 fw-semibold">
+                                        <i class="bi bi-shield-check me-1"></i>Confirm & Prebook
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                `;
+
+                document.getElementById('modalPrebookTitle').textContent = `Prebook: ${act.name}`;
+                document.getElementById('prebookModalBody').innerHTML = modalBody;
+
+                const modal = new bootstrap.Modal(document.getElementById('prebookExperienceModal'));
+                modal.show();
+            },
+
+            // Recalculate price in modal
+            recalculatePrice: function () {
+                const activities = StorageService.get(STORAGE_KEYS.ACTIVITIES, []);
+                const act = activities.find(a => a.id === this.activeActivityId);
+                if (!act) return;
+
+                const guests = parseInt(document.getElementById('pbGuestsInput').value) || 1;
+                const subtotal = guests * act.pricePerPerson;
+                const tax = subtotal * 0.05;
+                const total = subtotal + tax;
+
+                document.getElementById('pbTaxPreview').textContent = App.formatCurrency(tax);
+                document.getElementById('pbTotalPreview').textContent = App.formatCurrency(total);
+            },
+
+            // Handle Prebooking Form Submission
+            handleBookingSubmit: function () {
+                const activities = StorageService.get(STORAGE_KEYS.ACTIVITIES, []);
+                const act = activities.find(a => a.id === this.activeActivityId);
+                if (!act) return;
+
+                const date = document.getElementById('pbDateInput').value;
+                const slot = document.getElementById('pbSlotSelect').value;
+                const guests = parseInt(document.getElementById('pbGuestsInput').value) || 1;
+                const paymentChoice = document.getElementById('pbPaymentChoice').value;
+                const name = document.getElementById('pbGuestName').value.trim();
+                const email = document.getElementById('pbGuestEmail').value.trim();
+                const phone = document.getElementById('pbGuestPhone').value.trim();
+                const notes = document.getElementById('pbNotes').value.trim();
+
+                const subtotal = guests * act.pricePerPerson;
+                const tax = subtotal * 0.05;
+                const totalCost = subtotal + tax;
+
+                const bookingData = {
+                    id: StorageService.generateId('actb'),
+                    activityId: act.id,
+                    activityName: act.name,
+                    guestName: name,
+                    guestEmail: email,
+                    guestPhone: phone,
+                    bookingDate: date,
+                    timeSlot: slot,
+                    participants: guests,
+                    subtotal: subtotal,
+                    tax: tax,
+                    totalCost: totalCost,
+                    specialRequests: notes,
+                    bookingStatus: 'Confirmed'
+                };
+
+                // Close Prebook modal
+                const pbModalEl = document.getElementById('prebookExperienceModal');
+                const pbModal = bootstrap.Modal.getInstance(pbModalEl);
+                if (pbModal) pbModal.hide();
+
+                if (paymentChoice === 'Online') {
+                    // Launch Payment Gateway
+                    PaymentService.openPaymentModal({
+                        id: bookingData.id,
+                        total: totalCost,
+                        description: `${act.name} (${guests} Guest${guests > 1 ? 's' : ''})`,
+                        customerName: name,
+                        customerEmail: email,
+                        customerPhone: phone,
+                        category: 'Activity Prebooking'
+                    }, (res) => {
+                        // Payment Successful
+                        bookingData.paymentMethod = res.method || 'Credit Card';
+                        bookingData.paymentStatus = 'Successful';
+                        bookingData.transactionRef = res.transactionRef;
+
+                        const saved = StorageService.prebookActivity(bookingData);
+                        App.showToast(`Activity Prebooked! Voucher Pass generated for ${act.name}`, 'success');
+
+                        ActivitiesApp.renderBookingsList();
+                        ActivitiesApp.showVoucherTicket(saved);
+                    }, (err) => {
+                        App.showToast(err.reason || 'Payment could not be completed.', 'error');
+                    });
+                } else {
+                    // Pay at Concierge
+                    bookingData.paymentMethod = 'Pay at Hotel Concierge';
+                    bookingData.paymentStatus = 'Pending Settlement';
+                    bookingData.transactionRef = `PAY_CONCIERGE_${Math.floor(100000 + Math.random() * 900000)}`;
+
+                    const saved = StorageService.prebookActivity(bookingData);
+                    App.showToast(`Experience reserved! Please settle voucher at front desk on check-in.`, 'success');
+
+                    this.renderBookingsList();
+                    this.showVoucherTicket(saved);
+                }
+            },
+
+            // Show Digital Voucher Pass Modal
+            showVoucherTicket: function (booking) {
+                const modalEl = document.getElementById('voucherTicketModal');
+                if (!modalEl) return;
+
+                const content = `
+                    <div class="voucher-pass p-4">
+                        <div class="d-flex justify-content-between align-items-center pb-3 border-bottom mb-3">
+                            <div>
+                                <span class="badge bg-gold text-dark font-monospace mb-1">${booking.id}</span>
+                                <h4 class="font-heading fw-bold text-navy mb-0">${booking.activityName}</h4>
+                                <small class="text-muted">The Grand Aurelia Resort & Leisure</small>
+                            </div>
+                            <div class="text-end">
+                                <i class="bi bi-stars text-gold display-6"></i>
+                            </div>
+                        </div>
+
+                        <div class="row g-3 mb-3">
+                            <div class="col-6">
+                                <small class="text-muted d-block" style="font-size:0.75rem;">PASS HOLDER</small>
+                                <strong class="text-dark">${booking.guestName}</strong>
+                            </div>
+                            <div class="col-6">
+                                <small class="text-muted d-block" style="font-size:0.75rem;">PARTICIPANTS</small>
+                                <strong class="text-dark">${booking.participants} Guest${booking.participants > 1 ? 's' : ''}</strong>
+                            </div>
+                            <div class="col-6">
+                                <small class="text-muted d-block" style="font-size:0.75rem;">SCHEDULED DATE</small>
+                                <strong class="text-navy"><i class="bi bi-calendar-event text-gold me-1"></i>${booking.bookingDate}</strong>
+                            </div>
+                            <div class="col-6">
+                                <small class="text-muted d-block" style="font-size:0.75rem;">TIME SLOT</small>
+                                <strong class="text-navy"><i class="bi bi-clock text-gold me-1"></i>${booking.timeSlot}</strong>
+                            </div>
+                        </div>
+
+                        <div class="p-3 bg-light rounded-3 border d-flex justify-content-between align-items-center mb-3">
+                            <div>
+                                <small class="text-muted d-block" style="font-size:0.72rem;">PAYMENT SETTLEMENT</small>
+                                <span class="badge ${booking.paymentStatus === 'Successful' ? 'bg-success' : 'bg-warning text-dark'}">${booking.paymentStatus}</span>
+                                <small class="text-muted d-block mt-1">${booking.paymentMethod}</small>
+                            </div>
+                            <div class="text-end">
+                                <small class="text-muted d-block" style="font-size:0.72rem;">AMOUNT PAID</small>
+                                <span class="fs-5 fw-bold text-gold">${App.formatCurrency(booking.totalCost)}</span>
+                            </div>
+                        </div>
+
+                        <div class="text-center pt-2">
+                            <i class="bi bi-qr-code text-navy display-3"></i>
+                            <div class="font-monospace text-muted small mt-1">Auth: ${booking.transactionRef}</div>
+                            <small class="text-muted" style="font-size:0.72rem;">Present this pass or QR to Concierge / Experience Guide on arrival.</small>
+                        </div>
+                    </div>
+                `;
+
+                document.getElementById('voucherTicketBody').innerHTML = content;
+                const modal = new bootstrap.Modal(modalEl);
+                modal.show();
+            },
+
+            // Render Activity Bookings Table
+            renderBookingsList: function () {
+                const tableBody = document.getElementById('activityBookingsTableBody');
+                const mobileList = document.getElementById('activityBookingsMobileList');
+                if (!tableBody && !mobileList) return;
+
+                const allBookings = StorageService.get(STORAGE_KEYS.ACTIVITY_BOOKINGS, []);
+                const user = AuthService.getCurrentUser();
+
+                let filtered = allBookings;
+                if (user && user.role === 'Customer') {
+                    filtered = allBookings.filter(b => b.guestEmail.toLowerCase() === user.email.toLowerCase());
+                }
+
+                if (filtered.length === 0) {
+                    if (tableBody) tableBody.innerHTML = `<tr><td colspan="9" class="text-center py-4 text-muted small">No activity prebookings recorded yet.</td></tr>`;
+                    if (mobileList) mobileList.innerHTML = `<div class="text-center py-4 text-muted small">No activity prebookings recorded yet.</div>`;
+                    return;
+                }
+
+                let tRows = '';
+                let mCards = '';
+
+                filtered.forEach(b => {
+                    const statusClass = b.paymentStatus === 'Successful' ? 'badge-available' : 'badge-pending';
+
+                    tRows += `
+                        <tr>
+                            <td class="font-monospace fw-bold text-navy small">${b.id}</td>
+                            <td>
+                                <strong class="text-navy small d-block">${b.activityName}</strong>
+                                <small class="text-muted">${b.specialRequests || 'Standard booking'}</small>
+                            </td>
+                            <td class="small">${b.guestName}</td>
+                            <td class="small"><i class="bi bi-calendar-event text-gold me-1"></i>${b.bookingDate} (${b.timeSlot})</td>
+                            <td class="small">${b.participants}</td>
+                            <td class="fw-bold text-gold small">${App.formatCurrency(b.totalCost)}</td>
+                            <td><small class="badge bg-light text-dark border">${b.paymentMethod}</small></td>
+                            <td><span class="badge-status ${statusClass}">${b.paymentStatus}</span></td>
+                            <td class="text-end">
+                                <button class="btn btn-sm btn-outline-secondary py-0 px-2" onclick='ActivitiesApp.showVoucherTicket(${JSON.stringify(b)})'>
+                                    <i class="bi bi-ticket-perforated me-1"></i>View Pass
+                                </button>
+                            </td>
+                        </tr>
+                    `;
+
+                    mCards += `
+                        <div class="mobile-record-card">
+                            <div class="d-flex justify-content-between align-items-center mb-1">
+                                <span class="font-monospace fw-bold text-navy">${b.id}</span>
+                                <span class="badge-status ${statusClass}">${b.paymentStatus}</span>
+                            </div>
+                            <h6 class="fw-bold text-navy mb-1">${b.activityName}</h6>
+                            <div class="small text-muted mb-2"><i class="bi bi-calendar-event me-1"></i>${b.bookingDate} (${b.timeSlot}) • ${b.participants} Guests</div>
+                            <div class="d-flex justify-content-between align-items-center pt-2 border-top">
+                                <span class="fw-bold text-gold">${App.formatCurrency(b.totalCost)}</span>
+                                <button class="btn btn-sm btn-outline-secondary py-1 px-3" onclick='ActivitiesApp.showVoucherTicket(${JSON.stringify(b)})'>View Digital Pass</button>
+                            </div>
+                        </div>
+                    `;
+                });
+
+                if (tableBody) tableBody.innerHTML = tRows;
+                if (mobileList) mobileList.innerHTML = mCards;
+            }
+        };
+
+        document.addEventListener('DOMContentLoaded', () => {
+            ActivitiesApp.init();
+        });
+    </script>
+</body>
+</html>

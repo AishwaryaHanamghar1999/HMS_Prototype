@@ -49,28 +49,35 @@
                 
                 <!-- Financial Overview Cards -->
                 <div class="row g-3 mb-4">
-                    <div class="col-12 col-sm-6 col-xl-3">
+                    <div class="col-12 col-sm-6 col-lg-3">
                         <div class="stat-card">
                             <span class="text-muted small fw-semibold">Total Gross Revenue</span>
                             <h3 class="fw-bold text-navy font-heading mt-1" id="repTotalGross">$0.00</h3>
-                            <small class="text-success"><i class="bi bi-check-circle-fill me-1"></i>Combined Dining + Rooms</small>
+                            <small class="text-success"><i class="bi bi-check-circle-fill me-1"></i>Dining + Suites + Activities</small>
                         </div>
                     </div>
-                    <div class="col-12 col-sm-6 col-xl-3">
+                    <div class="col-12 col-sm-6 col-lg-2">
                         <div class="stat-card">
                             <span class="text-muted small fw-semibold">Dining Sales</span>
                             <h3 class="fw-bold text-gold font-heading mt-1" id="repDiningSales">$0.00</h3>
                             <small class="text-muted" id="repDiningOrdersCount">0 Orders Settled</small>
                         </div>
                     </div>
-                    <div class="col-12 col-sm-6 col-xl-3">
+                    <div class="col-12 col-sm-6 col-lg-2">
                         <div class="stat-card">
-                            <span class="text-muted small fw-semibold">Hotel Suite Revenue</span>
+                            <span class="text-muted small fw-semibold">Hotel Suites</span>
                             <h3 class="fw-bold text-primary font-heading mt-1" id="repRoomRevenue">$0.00</h3>
                             <small class="text-muted" id="repRoomStaysCount">0 Stays Booked</small>
                         </div>
                     </div>
-                    <div class="col-12 col-sm-6 col-xl-3">
+                    <div class="col-12 col-sm-6 col-lg-2">
+                        <div class="stat-card">
+                            <span class="text-muted small fw-semibold">Resort Activities</span>
+                            <h3 class="fw-bold text-info font-heading mt-1" id="repActivityRevenue">$0.00</h3>
+                            <small class="text-muted" id="repActivitiesCount">0 Passes Prebooked</small>
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-6 col-lg-3">
                         <div class="stat-card">
                             <span class="text-muted small fw-semibold">Hospitality Tax Collected</span>
                             <h3 class="fw-bold text-navy font-heading mt-1" id="repTaxCollected">$0.00</h3>
@@ -249,7 +256,20 @@
                 }
             });
 
-            const totalGross = diningGross + roomGross;
+            // 3. Calculate Activity Prebookings Totals
+            const activityBookings = StorageService.get(STORAGE_KEYS.ACTIVITY_BOOKINGS, []);
+            let activityGross = 0;
+            let settledActivitiesCount = 0;
+
+            activityBookings.forEach(ab => {
+                if (ab.paymentStatus === 'Successful') {
+                    activityGross += (ab.totalCost || 0);
+                    settledActivitiesCount++;
+                }
+            });
+
+            const totalGross = diningGross + roomGross + activityGross;
+            const totalTax = diningTax + ((roomGross + activityGross) * 0.05);
 
             // Render KPI values
             document.getElementById('repTotalGross').textContent = App.formatCurrency(totalGross);
@@ -257,7 +277,9 @@
             document.getElementById('repDiningOrdersCount').textContent = `${settledOrdersCount} Orders Settled`;
             document.getElementById('repRoomRevenue').textContent = App.formatCurrency(roomGross);
             document.getElementById('repRoomStaysCount').textContent = `${settledStaysCount} Stays Settled`;
-            document.getElementById('repTaxCollected').textContent = App.formatCurrency(diningTax + (roomGross * 0.05));
+            document.getElementById('repActivityRevenue').textContent = App.formatCurrency(activityGross);
+            document.getElementById('repActivitiesCount').textContent = `${settledActivitiesCount} Passes Settled`;
+            document.getElementById('repTaxCollected').textContent = App.formatCurrency(totalTax);
 
             // Render Top Selling Items Table
             const topSellingList = Object.values(itemSalesMap).sort((a, b) => b.quantity - a.quantity);
@@ -318,7 +340,15 @@
                 reason: 'Table booking cancelled'
             }));
 
-            const allCancellations = [...cancelledOrders, ...cancelledRooms, ...cancelledTables];
+            const cancelledActivities = activityBookings.filter(a => a.bookingStatus === 'Cancelled').map(a => ({
+                id: a.id,
+                cat: 'Activity Prebooking',
+                name: a.customerName,
+                date: `${a.date} (${a.timeSlot})`,
+                reason: 'Activity prebooking cancelled'
+            }));
+
+            const allCancellations = [...cancelledOrders, ...cancelledRooms, ...cancelledTables, ...cancelledActivities];
             const cancTbody = document.getElementById('repCancellationsTableBody');
             const cancMobile = document.getElementById('repCancellationsMobileList');
 

@@ -187,7 +187,11 @@ const MenuModule = {
 
         const result = StorageService.addToCart(item, qty);
         if (result.success) {
-            App.showToast(`Added ${qty}x ${item.name} to cart!`, 'success');
+            if (!AuthService.isAuthenticated()) {
+                App.showToast(`Added ${qty}x ${item.name} to cart! (Sign-in required at checkout)`, 'info');
+            } else {
+                App.showToast(`Added ${qty}x ${item.name} to cart!`, 'success');
+            }
             App.updateCartBadge();
             // Reset quantity to 1
             if (input) input.value = 1;

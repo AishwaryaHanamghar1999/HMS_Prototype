@@ -943,3 +943,405 @@ h1, h2, h3, h4, .font-heading {
     }
 }
 
+/* ===================================================
+   RESTAURANT POINT OF SALE (POS) & FLOOR SYSTEM
+   =================================================== */
+
+.pos-container {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    overflow: hidden;
+    background-color: #f1f5f9;
+}
+
+.pos-header {
+    background: #090e17;
+    color: #ffffff;
+    border-bottom: 1px solid rgba(212, 175, 55, 0.25);
+    padding: 0.65rem 1.25rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    z-index: 1020;
+}
+
+.pos-workspace {
+    display: flex;
+    flex: 1;
+    overflow: hidden;
+    height: calc(100vh - 60px);
+}
+
+.pos-catalog-pane {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    background: #f8fafc;
+    border-right: 1px solid #e2e8f0;
+}
+
+.pos-ticket-pane {
+    width: 440px;
+    background: #ffffff;
+    display: flex;
+    flex-direction: column;
+    box-shadow: -4px 0 25px rgba(0, 0, 0, 0.05);
+    z-index: 1010;
+}
+
+@media (max-width: 991px) {
+    .pos-workspace {
+        flex-direction: column;
+        height: auto;
+        overflow-y: auto;
+    }
+    .pos-ticket-pane {
+        width: 100%;
+        border-top: 2px solid #e2e8f0;
+    }
+}
+
+/* Floor Plan Tables */
+.pos-table-card {
+    background: #ffffff;
+    border: 1.5px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 1rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    position: relative;
+    user-select: none;
+}
+
+.pos-table-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+}
+
+.pos-table-card.active-table {
+    border-color: #d4af37 !important;
+    box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.3) !important;
+}
+
+.pos-table-card.table-available {
+    border-left: 5px solid #10b981;
+}
+
+.pos-table-card.table-occupied {
+    border-left: 5px solid #ef4444;
+    background: #fff8f8;
+}
+
+.pos-table-card.table-reserved {
+    border-left: 5px solid #f59e0b;
+    background: #fffbf0;
+}
+
+.pos-table-card.table-cleaning {
+    border-left: 5px solid #8b5cf6;
+    background: #fbf7ff;
+}
+
+/* POS Dish Cards */
+.pos-dish-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+    gap: 0.85rem;
+    padding: 1rem;
+    overflow-y: auto;
+}
+
+.pos-dish-card {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    display: flex;
+    flex-direction: column;
+    user-select: none;
+}
+
+.pos-dish-card:hover {
+    transform: translateY(-2px);
+    border-color: #cbd5e1;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
+}
+
+.pos-dish-card:active {
+    transform: scale(0.97);
+}
+
+.pos-dish-img-wrap {
+    height: 105px;
+    width: 100%;
+    position: relative;
+    background-color: #e2e8f0;
+}
+
+.pos-dish-img-wrap img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.pos-dish-body {
+    padding: 0.65rem 0.75rem;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+/* Active Running Ticket */
+.ticket-items-scroll {
+    flex: 1;
+    overflow-y: auto;
+    padding: 0.5rem 0.75rem;
+}
+
+.ticket-item-row {
+    padding: 0.6rem;
+    border-radius: 8px;
+    border-bottom: 1px dashed #e2e8f0;
+    transition: background-color 0.15s ease;
+}
+
+.ticket-item-row:hover {
+    background-color: #f8fafc;
+}
+
+.ticket-item-row.is-sent-kot {
+    background-color: #f1f5f9;
+    border-left: 3px solid #64748b;
+}
+
+.ticket-actions-bar {
+    padding: 0.75rem 1rem;
+    background: #f8fafc;
+    border-top: 1px solid #e2e8f0;
+}
+
+/* ===================================================
+   KITCHEN DISPLAY SYSTEM (KDS)
+   =================================================== */
+
+.kds-body {
+    background-color: #0b111e;
+    color: #e2e8f0;
+    min-height: 100vh;
+    font-family: var(--font-ui);
+}
+
+.kds-header {
+    background-color: #060a12;
+    border-bottom: 1px solid #1e293b;
+    padding: 0.75rem 1.5rem;
+}
+
+.kds-board {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.25rem;
+    padding: 1.25rem;
+    overflow-y: auto;
+}
+
+.kds-ticket {
+    background: #131b2e;
+    border: 1px solid #1e293b;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+    display: flex;
+    flex-direction: column;
+}
+
+.kds-ticket-header {
+    padding: 0.75rem 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-weight: 600;
+}
+
+.kds-ticket-header.timer-green {
+    background: linear-gradient(135deg, #065f46 0%, #047857 100%);
+    color: #ffffff;
+}
+
+.kds-ticket-header.timer-amber {
+    background: linear-gradient(135deg, #b45309 0%, #d97706 100%);
+    color: #ffffff;
+}
+
+.kds-ticket-header.timer-red {
+    background: linear-gradient(135deg, #991b1b 0%, #dc2626 100%);
+    color: #ffffff;
+    animation: pulseRed 1.8s infinite;
+}
+
+@keyframes pulseRed {
+    0% { opacity: 1; }
+    50% { opacity: 0.85; }
+    100% { opacity: 1; }
+}
+
+.kds-ticket-body {
+    padding: 1rem;
+    flex: 1;
+}
+
+.kds-dish-line {
+    padding: 0.5rem 0;
+    border-bottom: 1px solid #1e293b;
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+}
+
+.kds-dish-line:last-child {
+    border-bottom: none;
+}
+
+.kds-dish-line.item-done {
+    opacity: 0.4;
+    text-decoration: line-through;
+}
+
+/* ===================================================
+   THERMAL RESTAURANT RECEIPT STYLES
+   =================================================== */
+
+.thermal-receipt {
+    width: 100%;
+    max-width: 380px;
+    margin: 0 auto;
+    background: #ffffff;
+    color: #111827;
+    padding: 20px;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 13px;
+    line-height: 1.4;
+    border: 1px dashed #cbd5e1;
+    border-radius: 4px;
+}
+
+.thermal-receipt .receipt-divider {
+    border-top: 1px dashed #94a3b8;
+    margin: 10px 0;
+}
+
+.thermal-receipt .receipt-double-divider {
+    border-top: 2px dashed #475569;
+    margin: 12px 0;
+}
+
+@media print {
+    body * {
+        visibility: hidden;
+    }
+    .thermal-receipt, .thermal-receipt * {
+        visibility: visible;
+    }
+    .thermal-receipt {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        max-width: 320px;
+        border: none;
+        padding: 0;
+    }
+    .no-print {
+        display: none !important;
+    }
+}
+
+/* ==========================================
+ * ACTIVITIES & EXPERIENCES PREBOOKING STYLES
+ * ========================================== */
+.activity-card {
+    background: #ffffff;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.activity-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 14px 35px -8px rgba(15, 23, 42, 0.12);
+    border-color: var(--gold-accent);
+}
+
+.activity-card-img-wrap {
+    height: 220px;
+    overflow: hidden;
+    position: relative;
+}
+
+.activity-card-img-wrap img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+}
+
+.activity-card:hover .activity-card-img-wrap img {
+    transform: scale(1.06);
+}
+
+/* Luxury Digital Activity Voucher Pass */
+.voucher-pass {
+    background: #ffffff;
+    border: 2px dashed #c5a880;
+    border-radius: var(--radius-lg);
+    position: relative;
+    padding: 1.5rem;
+    box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
+}
+
+.voucher-pass::before, .voucher-pass::after {
+    content: '';
+    position: absolute;
+    width: 24px;
+    height: 24px;
+    background-color: var(--bg-light);
+    border-radius: 50%;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.voucher-pass::before { left: -12px; }
+.voucher-pass::after { right: -12px; }
+
+/* Filter Buttons Active State */
+.filter-btn.active {
+    background: var(--navy-primary) !important;
+    color: #ffffff !important;
+    border-color: var(--navy-primary) !important;
+}
+
+/* Card Mockup Interactive Flip & Glow */
+.card-mockup-credit, .card-mockup-debit {
+    position: relative;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card-mockup-credit:hover {
+    transform: rotateY(5deg) translateY(-2px);
+    box-shadow: 0 12px 25px rgba(15, 23, 42, 0.3) !important;
+}
+
+.card-mockup-debit:hover {
+    transform: rotateY(-5deg) translateY(-2px);
+    box-shadow: 0 12px 25px rgba(6, 78, 59, 0.35) !important;
+}
+
+

@@ -27,8 +27,9 @@
             <div class="d-none d-lg-flex align-items-center gap-1">
                 <a href="index.html" class="nav-link">Home</a>
                 <a href="menu.html" class="nav-link">Food Menu</a>
-                <a href="table-booking.html" class="nav-link">Reserve Table</a>
                 <a href="room-booking.html" class="nav-link">Luxury Suites</a>
+                <a href="activities.html" class="nav-link">Activities Prebooking</a>
+                <a href="table-booking.html" class="nav-link">Reserve Table</a>
                 <a href="orders.html" class="nav-link">Orders</a>
             </div>
 
@@ -100,6 +101,7 @@
                         <!-- 2. Guest Information -->
                         <div class="card-hotel p-4 mb-4 bg-white border">
                             <h5 class="font-heading fw-bold text-navy mb-3">2. Guest Details</h5>
+                            <div id="checkoutAccountBadge"></div>
                             
                             <div class="row g-3">
                                 <div class="col-12 col-sm-6">
@@ -128,7 +130,7 @@
                             <div class="alert alert-info py-2 px-3 small rounded-3 mb-3 border-info-subtle d-flex align-items-center gap-2">
                                 <i class="bi bi-shield-check text-info fs-5"></i>
                                 <div>
-                                    <strong>Gateway Sandbox Architecture:</strong> Razorpay simulation modal is equipped for testing online card/UPI payments without charging real money.
+                                    <strong>Multi-Channel Card Gateway Engine:</strong> Fully supports Visa, Mastercard & Amex Credit Cards, RuPay & Visa Debit Cards, UPI QR, and 3D Secure Bank OTP verification.
                                 </div>
                             </div>
 
@@ -137,11 +139,11 @@
                                     <div class="d-flex align-items-center gap-3">
                                         <input type="radio" name="paymentMethod" value="Razorpay" class="form-check-input" checked>
                                         <div>
-                                            <strong class="d-block text-dark small">Razorpay Online Gateway (Simulation Ready)</strong>
-                                            <small class="text-muted">Instant Card, UPI QR, and Net Banking sandbox testing</small>
+                                            <strong class="d-block text-dark small"><i class="bi bi-credit-card-2-front text-primary me-1"></i>Online Card Gateway (Debit & Credit Card + 3DS OTP)</strong>
+                                            <small class="text-muted">Instant credit card (Visa/MC/Amex), debit card (RuPay/Visa), UPI QR & 3D Secure verification</small>
                                         </div>
                                     </div>
-                                    <span class="badge bg-primary text-uppercase" style="font-size: 0.65rem;">Recommended</span>
+                                    <span class="badge bg-gold text-dark text-uppercase fw-semibold" style="font-size: 0.65rem;">Recommended</span>
                                 </label>
 
                                 <label class="p-3 border rounded-3 d-flex align-items-center justify-content-between" style="cursor: pointer;">
@@ -219,6 +221,13 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
+            // 1. Strict Authentication Check: Login is compulsory to order items
+            if (!AuthService.isAuthenticated()) {
+                window.location.href = 'login.html?redirect=checkout.html&reason=order_login';
+                return;
+            }
+
+            // 2. Validate Cart Items
             const cart = StorageService.getCart();
             if (cart.length === 0) {
                 alert('Your cart is empty! Please add items before checking out.');
@@ -237,6 +246,22 @@
                 document.getElementById('checkoutName').value = user.name || '';
                 document.getElementById('checkoutEmail').value = user.email || '';
                 document.getElementById('checkoutPhone').value = user.phone || '+1 (555) 019-8821';
+
+                const badge = document.getElementById('checkoutAccountBadge');
+                if (badge) {
+                    badge.innerHTML = `
+                        <div class="alert alert-success py-2 px-3 small rounded-3 mb-3 d-flex align-items-center justify-content-between border-success-subtle">
+                            <div class="d-flex align-items-center gap-2">
+                                <i class="bi bi-shield-check text-success fs-5"></i>
+                                <div>
+                                    <strong class="d-block text-dark">Verified Account: ${user.name}</strong>
+                                    <span class="text-muted" style="font-size:0.75rem;">${user.email} &bull; Role: <span class="badge bg-primary-subtle text-primary">${user.role}</span></span>
+                                </div>
+                            </div>
+                            <span class="badge bg-success text-white">Signed In</span>
+                        </div>
+                    `;
+                }
             }
         }
 
@@ -291,6 +316,16 @@
         }
 
         function handlePlaceOrder() {
+            // Strict Authentication Guard
+            const user = AuthService.getCurrentUser();
+            if (!user) {
+                App.showToast('Login is compulsory to place this order!', 'error');
+                setTimeout(() => {
+                    window.location.href = 'login.html?redirect=checkout.html&reason=order_login';
+                }, 600);
+                return;
+            }
+
             const cart = StorageService.getCart();
             if (cart.length === 0) {
                 App.showToast('Your cart is empty!', 'error');
@@ -318,12 +353,11 @@
                 }
             }
 
-            const user = AuthService.getCurrentUser();
             const orderId = StorageService.generateId('ord');
 
             const orderData = {
                 id: orderId,
-                customerId: user ? user.id : 'guest_' + Date.now(),
+                customerId: user.id, // Strictly bound to logged-in user account
                 customerName: name,
                 customerEmail: email,
                 customerPhone: phone,

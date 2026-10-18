@@ -98,13 +98,18 @@ const App = {
                             </li>
                             <li><a class="dropdown-item py-2 small" href="profile.html"><i class="bi bi-person me-2"></i>My Profile</a></li>
                             ${user.role !== 'Customer' ? '<li><a class="dropdown-item py-2 small" href="dashboard.html"><i class="bi bi-speedometer2 me-2"></i>Management Dashboard</a></li>' : ''}
+                            ${user.role === 'Admin' || user.role === 'Manager' || user.role === 'Waiter' ? '<li><a class="dropdown-item py-2 small text-gold fw-semibold" href="pos.html"><i class="bi bi-receipt-cutoff me-2"></i>Restaurant POS Terminal</a></li><li><a class="dropdown-item py-2 small" href="kds.html"><i class="bi bi-fire me-2 text-danger"></i>Kitchen Display (KDS)</a></li>' : ''}
+                            <li class="dropdown-header small text-muted text-uppercase" style="font-size: 0.65rem;">5 Primary Role Logins</li>
+                            <li><a class="dropdown-item py-1 small" href="javascript:void(0)" onclick="AuthService.quickSwitchRole('Admin')"><i class="bi bi-shield-check text-primary me-2"></i>1. Admin</a></li>
+                            <li><a class="dropdown-item py-1 small" href="javascript:void(0)" onclick="AuthService.quickSwitchRole('Purchase')"><i class="bi bi-cart-check text-warning me-2"></i>2. Purchase</a></li>
+                            <li><a class="dropdown-item py-1 small" href="javascript:void(0)" onclick="AuthService.quickSwitchRole('Accounts')"><i class="bi bi-cash-stack text-success me-2"></i>3. Accounts</a></li>
+                            <li><a class="dropdown-item py-1 small" href="javascript:void(0)" onclick="AuthService.quickSwitchRole('Manager')"><i class="bi bi-briefcase text-info me-2"></i>4. Manager</a></li>
+                            <li><a class="dropdown-item py-1 small" href="javascript:void(0)" onclick="AuthService.quickSwitchRole('MD')"><i class="bi bi-person-workspace text-gold me-2"></i>5. MD</a></li>
                             <li><hr class="dropdown-divider my-1"></li>
-                            <li class="dropdown-header small text-muted text-uppercase" style="font-size: 0.65rem;">Quick Demo Role Switch</li>
-                            <li><a class="dropdown-item py-1 small" href="javascript:void(0)" onclick="AuthService.quickSwitchRole('Admin')"><i class="bi bi-shield-check text-primary me-2"></i>Admin</a></li>
-                            <li><a class="dropdown-item py-1 small" href="javascript:void(0)" onclick="AuthService.quickSwitchRole('Manager')"><i class="bi bi-briefcase text-success me-2"></i>Manager</a></li>
-                            <li><a class="dropdown-item py-1 small" href="javascript:void(0)" onclick="AuthService.quickSwitchRole('Receptionist')"><i class="bi bi-calendar2-check text-info me-2"></i>Receptionist</a></li>
-                            <li><a class="dropdown-item py-1 small" href="javascript:void(0)" onclick="AuthService.quickSwitchRole('Waiter')"><i class="bi bi-cup-hot text-warning me-2"></i>Waiter</a></li>
-                            <li><a class="dropdown-item py-1 small" href="javascript:void(0)" onclick="AuthService.quickSwitchRole('Customer')"><i class="bi bi-person-heart text-danger me-2"></i>Customer</a></li>
+                            <li class="dropdown-header small text-muted text-uppercase" style="font-size: 0.65rem;">Front Desk & Guest Access</li>
+                            <li><a class="dropdown-item py-1 small" href="javascript:void(0)" onclick="AuthService.quickSwitchRole('Receptionist')"><i class="bi bi-calendar2-check text-muted me-2"></i>Receptionist</a></li>
+                            <li><a class="dropdown-item py-1 small" href="javascript:void(0)" onclick="AuthService.quickSwitchRole('Customer')"><i class="bi bi-person-heart text-muted me-2"></i>Customer</a></li>
+                            <li><a class="dropdown-item py-1 small" href="javascript:void(0)" onclick="AuthService.quickSwitchRole('Waiter')"><i class="bi bi-cup-hot text-muted me-2"></i>Waiter</a></li>
                             <li><hr class="dropdown-divider my-1"></li>
                             <li><a class="dropdown-item py-2 small text-danger" href="javascript:void(0)" onclick="AuthService.logout()"><i class="bi bi-box-arrow-right me-2"></i>Sign Out</a></li>
                         </ul>
@@ -133,7 +138,19 @@ const App = {
                 </a>
             `;
 
-            if (role === 'Admin' || role === 'Manager' || role === 'Waiter') {
+            if (role === 'Admin' || role === 'MD' || role === 'Manager' || role === 'Waiter') {
+                navHTML += `
+                    <a href="pos.html" class="sidebar-item ${currentPage === 'pos.html' ? 'active' : ''}">
+                        <i class="bi bi-receipt-cutoff"></i> <span>Restaurant POS</span>
+                    </a>
+                    <a href="kds.html" class="sidebar-item ${currentPage === 'kds.html' ? 'active' : ''}">
+                        <i class="bi bi-fire"></i> <span>Kitchen KDS</span>
+                    </a>
+                    <a href="orders.html" class="sidebar-item ${currentPage === 'orders.html' ? 'active' : ''}">
+                        <i class="bi bi-receipt"></i> <span>Orders & Billing</span>
+                    </a>
+                `;
+            } else if (role === 'Accounts' || role === 'Purchase') {
                 navHTML += `
                     <a href="orders.html" class="sidebar-item ${currentPage === 'orders.html' ? 'active' : ''}">
                         <i class="bi bi-receipt"></i> <span>Orders & Billing</span>
@@ -141,7 +158,7 @@ const App = {
                 `;
             }
 
-            if (role === 'Admin' || role === 'Manager' || role === 'Receptionist' || role === 'Waiter') {
+            if (role === 'Admin' || role === 'MD' || role === 'Manager' || role === 'Receptionist' || role === 'Waiter') {
                 navHTML += `
                     <a href="table-booking.html" class="sidebar-item ${currentPage === 'table-booking.html' ? 'active' : ''}">
                         <i class="bi bi-calendar-event"></i> <span>Table Bookings</span>
@@ -149,7 +166,7 @@ const App = {
                 `;
             }
 
-            if (role === 'Admin' || role === 'Manager' || role === 'Receptionist') {
+            if (role === 'Admin' || role === 'MD' || role === 'Manager' || role === 'Receptionist' || role === 'Accounts') {
                 navHTML += `
                     <a href="room-booking.html" class="sidebar-item ${currentPage === 'room-booking.html' ? 'active' : ''}">
                         <i class="bi bi-door-open"></i> <span>Room Stays</span>
@@ -160,28 +177,42 @@ const App = {
                 `;
             }
 
-            if (role === 'Admin' || role === 'Manager') {
+            // Activities Prebooking Navigation Item for all roles
+            navHTML += `
+                <a href="activities.html" class="sidebar-item ${currentPage === 'activities.html' ? 'active' : ''}">
+                    <i class="bi bi-compass"></i> <span>Resort Activities</span>
+                </a>
+            `;
+
+            if (role === 'Admin' || role === 'MD' || role === 'Accounts' || role === 'Manager' || role === 'Purchase') {
+                if (role !== 'Accounts') {
+                    navHTML += `
+                        <a href="inventory.html" class="sidebar-item ${currentPage === 'inventory.html' ? 'active' : ''}">
+                            <i class="bi bi-box-seam"></i> <span>Menu & Stock</span>
+                        </a>
+                    `;
+                }
                 navHTML += `
-                    <a href="inventory.html" class="sidebar-item ${currentPage === 'inventory.html' ? 'active' : ''}">
-                        <i class="bi bi-box-seam"></i> <span>Menu & Stock</span>
-                    </a>
                     <a href="reports.html" class="sidebar-item ${currentPage === 'reports.html' ? 'active' : ''}">
-                        <i class="bi bi-graph-up-arrow"></i> <span>Financial Reports</span>
+                        <i class="bi bi-graph-up-arrow"></i> <span>${role === 'Accounts' ? 'Accounts Ledger & Tax' : role === 'Purchase' ? 'Procurement Spend' : role === 'MD' ? 'Executive P&L' : 'Financial Reports'}</span>
                     </a>
                 `;
             }
 
-            if (role === 'Admin') {
+            if (role === 'Admin' || role === 'MD') {
                 navHTML += `
                     <a href="staff.html" class="sidebar-item ${currentPage === 'staff.html' ? 'active' : ''}">
-                        <i class="bi bi-people"></i> <span>Staff Accounts</span>
+                        <i class="bi bi-people"></i> <span>Staff Directory</span>
                     </a>
                 `;
             }
 
-            // Public customer links for preview
+            // Customer Pages links for quick preview
             navHTML += `
-                <div class="px-3 pt-3 pb-1 text-uppercase text-muted" style="font-size: 0.68rem; letter-spacing: 0.05em;">Customer Pages</div>
+                <div class="px-3 pt-3 pb-1 text-uppercase text-muted" style="font-size: 0.68rem; letter-spacing: 0.05em;">Guest Services</div>
+                <a href="activities.html" class="sidebar-item ${currentPage === 'activities.html' ? 'active' : ''}">
+                    <i class="bi bi-stars text-gold"></i> <span>Prebook Experiences</span>
+                </a>
                 <a href="menu.html" class="sidebar-item ${currentPage === 'menu.html' ? 'active' : ''}">
                     <i class="bi bi-cup-straw"></i> <span>Public Food Menu</span>
                 </a>
@@ -224,25 +255,25 @@ const App = {
         } else if (role === 'Admin' || role === 'Manager') {
             navItems = [
                 { label: 'Dashboard', icon: 'bi-speedometer2', href: 'dashboard.html' },
-                { label: 'Orders', icon: 'bi-receipt', href: 'orders.html' },
+                { label: 'POS', icon: 'bi-receipt-cutoff', href: 'pos.html' },
+                { label: 'Kitchen', icon: 'bi-fire', href: 'kds.html' },
                 { label: 'Tables', icon: 'bi-calendar-check', href: 'table-booking.html' },
-                { label: 'Rooms', icon: 'bi-door-open', href: 'rooms.html' },
                 { label: 'More', icon: 'bi-grid', href: '#mobileMoreOffcanvas', isDrawer: true }
             ];
         } else if (role === 'Receptionist') {
             navItems = [
                 { label: 'Dashboard', icon: 'bi-speedometer2', href: 'dashboard.html' },
                 { label: 'Room Stays', icon: 'bi-door-open', href: 'room-booking.html' },
-                { label: 'Room List', icon: 'bi-building', href: 'rooms.html' },
+                { label: 'POS Terminal', icon: 'bi-receipt-cutoff', href: 'pos.html' },
                 { label: 'Tables', icon: 'bi-calendar-check', href: 'table-booking.html' },
                 { label: 'More', icon: 'bi-grid', href: '#mobileMoreOffcanvas', isDrawer: true }
             ];
         } else if (role === 'Waiter') {
             navItems = [
-                { label: 'Dashboard', icon: 'bi-speedometer2', href: 'dashboard.html' },
-                { label: 'Dine-In Orders', icon: 'bi-receipt', href: 'orders.html' },
+                { label: 'POS Terminal', icon: 'bi-receipt-cutoff', href: 'pos.html' },
+                { label: 'Kitchen KDS', icon: 'bi-fire', href: 'kds.html' },
                 { label: 'Tables', icon: 'bi-calendar-check', href: 'table-booking.html' },
-                { label: 'Take Order', icon: 'bi-plus-circle', href: 'menu.html' },
+                { label: 'Orders', icon: 'bi-receipt', href: 'orders.html' },
                 { label: 'More', icon: 'bi-grid', href: '#mobileMoreOffcanvas', isDrawer: true }
             ];
         }
@@ -303,6 +334,10 @@ const App = {
             <div class="offcanvas-body p-0">
                 <div class="list-group list-group-flush">
                     ${user && role !== 'Customer' ? '<a href="dashboard.html" class="list-group-item"><i class="bi bi-speedometer2 text-gold"></i> Management Dashboard</a>' : ''}
+                    ${role === 'Admin' || role === 'Manager' || role === 'Waiter' ? `
+                        <a href="pos.html" class="list-group-item bg-navy-surface text-white"><i class="bi bi-receipt-cutoff text-gold"></i> Restaurant POS Terminal</a>
+                        <a href="kds.html" class="list-group-item bg-navy-surface text-white"><i class="bi bi-fire text-danger"></i> Kitchen Display System (KDS)</a>
+                    ` : ''}
                     <a href="index.html" class="list-group-item"><i class="bi bi-house-door text-gold"></i> Hotel Home</a>
                     <a href="menu.html" class="list-group-item"><i class="bi bi-cup-straw text-gold"></i> Food Menu & Ordering</a>
                     <a href="table-booking.html" class="list-group-item"><i class="bi bi-calendar-check text-gold"></i> Table Reservations</a>
@@ -317,13 +352,13 @@ const App = {
                     <a href="profile.html" class="list-group-item"><i class="bi bi-person text-gold"></i> My Profile & History</a>
                     
                     <div class="p-3 bg-navy-dark mt-2">
-                        <div class="small text-muted text-uppercase mb-2 fw-semibold" style="font-size: 0.68rem;">Switch Demo Account</div>
+                        <div class="small text-muted text-uppercase mb-2 fw-semibold" style="font-size: 0.68rem;">5 Primary Demo Accounts</div>
                         <div class="d-flex flex-wrap gap-2">
-                            <button class="btn btn-sm btn-outline-light" onclick="AuthService.quickSwitchRole('Admin')">Admin</button>
-                            <button class="btn btn-sm btn-outline-light" onclick="AuthService.quickSwitchRole('Manager')">Manager</button>
-                            <button class="btn btn-sm btn-outline-light" onclick="AuthService.quickSwitchRole('Receptionist')">Reception</button>
-                            <button class="btn btn-sm btn-outline-light" onclick="AuthService.quickSwitchRole('Waiter')">Waiter</button>
-                            <button class="btn btn-sm btn-outline-light" onclick="AuthService.quickSwitchRole('Customer')">Customer</button>
+                            <button class="btn btn-sm btn-outline-light" onclick="AuthService.quickSwitchRole('Admin')">1. Admin</button>
+                            <button class="btn btn-sm btn-outline-light" onclick="AuthService.quickSwitchRole('Purchase')">2. Purchase</button>
+                            <button class="btn btn-sm btn-outline-light" onclick="AuthService.quickSwitchRole('Accounts')">3. Accounts</button>
+                            <button class="btn btn-sm btn-outline-light" onclick="AuthService.quickSwitchRole('Manager')">4. Manager</button>
+                            <button class="btn btn-sm btn-outline-light" onclick="AuthService.quickSwitchRole('MD')">5. MD</button>
                         </div>
                         <div class="mt-3 pt-2 border-top border-secondary d-flex justify-content-between align-items-center">
                             <button class="btn btn-sm btn-outline-danger" onclick="App.confirmResetData()"><i class="bi bi-arrow-counterclockwise me-1"></i>Reset Demo Data</button>

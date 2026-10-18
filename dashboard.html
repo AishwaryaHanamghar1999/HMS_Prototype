@@ -54,12 +54,16 @@
                             <i class="bi bi-arrow-repeat me-1"></i>Switch Demo Role
                         </button>
                         <ul class="dropdown-menu dropdown-menu-end shadow border-0 small">
-                            <li><h6 class="dropdown-header text-uppercase" style="font-size: 0.65rem;">Switch Active Role</h6></li>
-                            <li><a class="dropdown-item py-1" href="javascript:void(0)" onclick="AuthService.quickSwitchRole('Admin')"><i class="bi bi-shield-check text-primary me-2"></i>Admin (Full Access)</a></li>
-                            <li><a class="dropdown-item py-1" href="javascript:void(0)" onclick="AuthService.quickSwitchRole('Manager')"><i class="bi bi-briefcase text-success me-2"></i>Manager (Operations)</a></li>
-                            <li><a class="dropdown-item py-1" href="javascript:void(0)" onclick="AuthService.quickSwitchRole('Receptionist')"><i class="bi bi-calendar2-check text-info me-2"></i>Receptionist (Front Desk)</a></li>
-                            <li><a class="dropdown-item py-1" href="javascript:void(0)" onclick="AuthService.quickSwitchRole('Waiter')"><i class="bi bi-cup-hot text-warning me-2"></i>Waiter (Table Orders)</a></li>
-                            <li><a class="dropdown-item py-1" href="javascript:void(0)" onclick="AuthService.quickSwitchRole('Customer')"><i class="bi bi-person-heart text-danger me-2"></i>Customer (Guest View)</a></li>
+                            <li><h6 class="dropdown-header text-uppercase" style="font-size: 0.65rem;">5 Primary Role Logins</h6></li>
+                            <li><a class="dropdown-item py-1" href="javascript:void(0)" onclick="AuthService.quickSwitchRole('Admin')"><i class="bi bi-shield-check text-primary me-2"></i>1. Admin (Full Control)</a></li>
+                            <li><a class="dropdown-item py-1" href="javascript:void(0)" onclick="AuthService.quickSwitchRole('MD')"><i class="bi bi-person-workspace text-gold me-2"></i>2. MD (Director & P&L)</a></li>
+                            <li><a class="dropdown-item py-1" href="javascript:void(0)" onclick="AuthService.quickSwitchRole('Accounts')"><i class="bi bi-cash-stack text-success me-2"></i>3. Accounts & Gateways</a></li>
+                            <li><a class="dropdown-item py-1" href="javascript:void(0)" onclick="AuthService.quickSwitchRole('Receptionist')"><i class="bi bi-calendar2-check text-info me-2"></i>4. Receptionist (Front Desk)</a></li>
+                            <li><a class="dropdown-item py-1" href="javascript:void(0)" onclick="AuthService.quickSwitchRole('Customer')"><i class="bi bi-person-heart text-danger me-2"></i>5. Customer (Guest)</a></li>
+                            <li><hr class="dropdown-divider my-1"></li>
+                            <li><h6 class="dropdown-header text-uppercase" style="font-size: 0.65rem;">Operations Staff</h6></li>
+                            <li><a class="dropdown-item py-1" href="javascript:void(0)" onclick="AuthService.quickSwitchRole('Manager')"><i class="bi bi-briefcase text-muted me-2"></i>Manager (Operations)</a></li>
+                            <li><a class="dropdown-item py-1" href="javascript:void(0)" onclick="AuthService.quickSwitchRole('Waiter')"><i class="bi bi-cup-hot text-muted me-2"></i>Waiter (Table Orders)</a></li>
                         </ul>
                     </div>
 

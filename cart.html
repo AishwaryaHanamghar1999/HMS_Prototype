@@ -27,8 +27,9 @@
             <div class="d-none d-lg-flex align-items-center gap-1">
                 <a href="index.html" class="nav-link">Home</a>
                 <a href="menu.html" class="nav-link">Food Menu</a>
-                <a href="table-booking.html" class="nav-link">Reserve Table</a>
                 <a href="room-booking.html" class="nav-link">Luxury Suites</a>
+                <a href="activities.html" class="nav-link">Activities Prebooking</a>
+                <a href="table-booking.html" class="nav-link">Reserve Table</a>
                 <a href="orders.html" class="nav-link">Orders</a>
             </div>
 
@@ -174,14 +175,46 @@
                                 <span class="fs-4 fw-bold text-gold">${App.formatCurrency(totals.total)}</span>
                             </div>
 
-                            <div class="d-grid gap-2">
-                                <a href="checkout.html" class="btn btn-gold py-2 fs-6 fw-semibold">
-                                    <i class="bi bi-shield-check me-1"></i>Proceed to Checkout
-                                </a>
-                                <a href="menu.html" class="btn btn-outline-secondary btn-sm">
-                                    Add More Dishes
-                                </a>
-                            </div>
+                            ${AuthService.isAuthenticated() ? `
+                                <div class="alert alert-success py-2 px-3 small rounded-3 mb-3 d-flex align-items-center gap-2 border-success-subtle">
+                                    <i class="bi bi-person-check-fill text-success fs-5"></i>
+                                    <div class="lh-sm">
+                                        <span class="d-block fw-semibold text-dark">Signed in as ${AuthService.getCurrentUser().name}</span>
+                                        <small class="text-muted">${AuthService.getCurrentUser().role} &bull; ${AuthService.getCurrentUser().email}</small>
+                                    </div>
+                                </div>
+                                <div class="d-grid gap-2">
+                                    <a href="checkout.html" class="btn btn-gold py-2 fs-6 fw-semibold">
+                                        <i class="bi bi-shield-check me-1"></i>Proceed to Checkout
+                                    </a>
+                                    <a href="menu.html" class="btn btn-outline-secondary btn-sm">
+                                        Add More Dishes
+                                    </a>
+                                </div>
+                            ` : `
+                                <div class="alert alert-warning py-2 px-3 small rounded-3 mb-3 border-warning-subtle">
+                                    <div class="d-flex align-items-start gap-2">
+                                        <i class="bi bi-shield-lock-fill text-warning fs-5 flex-shrink-0 mt-1"></i>
+                                        <div>
+                                            <strong class="text-navy d-block">Sign In Compulsory to Order</strong>
+                                            <span class="text-muted" style="font-size: 0.78rem;">Please log in to your customer account to complete checkout. Your cart is preserved.</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="d-grid gap-2">
+                                    <a href="login.html?redirect=checkout.html&reason=order_login" class="btn btn-gold py-2 fs-6 fw-semibold">
+                                        <i class="bi bi-box-arrow-in-right me-1"></i>Sign In to Checkout
+                                    </a>
+                                    <a href="menu.html" class="btn btn-outline-secondary btn-sm">
+                                        Add More Dishes
+                                    </a>
+                                </div>
+                                <div class="text-center mt-2">
+                                    <small class="text-muted" style="font-size: 0.72rem;">
+                                        <i class="bi bi-info-circle me-1"></i>Quick 1-Click Demo Customer sign-in available
+                                    </small>
+                                </div>
+                            `}
 
                             <div class="mt-4 pt-3 border-top small text-muted text-center">
                                 <i class="bi bi-patch-check-fill text-gold me-1"></i>

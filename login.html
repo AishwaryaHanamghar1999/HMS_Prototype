@@ -36,30 +36,56 @@
                         <a href="index.html" class="btn btn-outline-secondary btn-sm"><i class="bi bi-house me-1"></i>Home</a>
                     </div>
 
-                    <!-- 1-Click Demo Accounts Quick Selector -->
+                    <!-- 5-Role 1-Click Demo Accounts Quick Selector -->
                     <div class="bg-light p-3 rounded-3 mb-4 border">
                         <div class="d-flex justify-content-between align-items-center mb-2">
                             <span class="text-uppercase fw-bold text-navy small" style="font-size:0.75rem; letter-spacing:0.05em;">
-                                <i class="bi bi-lightning-charge-fill text-gold me-1"></i>One-Click Demo Credentials
+                                <i class="bi bi-lightning-charge-fill text-gold me-1"></i>5 Instant Role Logins (1-Click Auto-Fill)
                             </span>
-                            <small class="text-muted" style="font-size: 0.7rem;">Click to Auto-Fill</small>
+                            <small class="text-muted" style="font-size: 0.7rem;">Select Any Role</small>
                         </div>
                         <div class="d-flex flex-wrap gap-2">
-                            <button type="button" class="btn btn-sm btn-outline-primary" onclick="fillCredentials('admin@hotel.demo', 'Admin@123', 'Admin')">
-                                <i class="bi bi-shield-check me-1"></i>Admin
+                            <button type="button" class="btn btn-sm btn-outline-primary fw-semibold" onclick="fillCredentials('admin@hotel.demo', 'Admin@123', 'Admin')">
+                                <i class="bi bi-shield-check me-1"></i>1. Admin
                             </button>
-                            <button type="button" class="btn btn-sm btn-outline-success" onclick="fillCredentials('manager@hotel.demo', 'Manager@123', 'Manager')">
-                                <i class="bi bi-briefcase me-1"></i>Manager
+                            <button type="button" class="btn btn-sm btn-outline-warning fw-semibold text-dark" onclick="fillCredentials('purchase@hotel.demo', 'Purchase@123', 'Purchase')">
+                                <i class="bi bi-cart-check me-1 text-warning"></i>2. Purchase
                             </button>
-                            <button type="button" class="btn btn-sm btn-outline-info" onclick="fillCredentials('reception@hotel.demo', 'Reception@123', 'Receptionist')">
-                                <i class="bi bi-calendar2-check me-1"></i>Receptionist
+                            <button type="button" class="btn btn-sm btn-outline-success fw-semibold" onclick="fillCredentials('accounts@hotel.demo', 'Accounts@123', 'Accounts')">
+                                <i class="bi bi-cash-stack me-1"></i>3. Accounts
                             </button>
-                            <button type="button" class="btn btn-sm btn-outline-warning text-dark" onclick="fillCredentials('waiter@hotel.demo', 'Waiter@123', 'Waiter')">
-                                <i class="bi bi-cup-hot me-1"></i>Waiter
+                            <button type="button" class="btn btn-sm btn-outline-secondary fw-semibold text-dark" onclick="fillCredentials('manager@hotel.demo', 'Manager@123', 'Manager')">
+                                <i class="bi bi-briefcase me-1 text-primary"></i>4. Manager
                             </button>
-                            <button type="button" class="btn btn-sm btn-outline-danger" onclick="fillCredentials('customer@hotel.demo', 'Customer@123', 'Customer')">
-                                <i class="bi bi-person-heart me-1"></i>Customer
+                            <button type="button" class="btn btn-sm btn-outline-dark fw-semibold" onclick="fillCredentials('md@hotel.demo', 'Md@123', 'MD')">
+                                <i class="bi bi-person-workspace me-1 text-gold"></i>5. MD
                             </button>
+                        </div>
+                        <div class="mt-2 pt-2 border-top d-flex justify-content-between align-items-center">
+                            <small class="text-muted" style="font-size: 0.72rem;">Also available for testing:</small>
+                            <div class="d-flex gap-1">
+                                <button type="button" class="btn btn-link btn-sm py-0 px-1 text-muted text-decoration-none" style="font-size: 0.72rem;" onclick="fillCredentials('reception@hotel.demo', 'Reception@123', 'Receptionist')">Receptionist</button>
+                                <span class="text-muted" style="font-size: 0.72rem;">•</span>
+                                <button type="button" class="btn btn-link btn-sm py-0 px-1 text-muted text-decoration-none" style="font-size: 0.72rem;" onclick="fillCredentials('customer@hotel.demo', 'Customer@123', 'Customer')">Customer</button>
+                                <span class="text-muted" style="font-size: 0.72rem;">•</span>
+                                <button type="button" class="btn btn-link btn-sm py-0 px-1 text-muted text-decoration-none" style="font-size: 0.72rem;" onclick="fillCredentials('waiter@hotel.demo', 'Waiter@123', 'Waiter')">Waiter</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Order Login Compulsory Notice -->
+                    <div id="orderNoticeWrapper" class="d-none">
+                        <div class="alert alert-warning py-3 px-3 rounded-3 mb-3 border-warning-subtle shadow-sm">
+                            <div class="d-flex align-items-start gap-2">
+                                <i class="bi bi-shield-lock-fill text-warning fs-4 flex-shrink-0"></i>
+                                <div class="flex-grow-1">
+                                    <strong class="text-navy d-block">Sign In Compulsory to Complete Order</strong>
+                                    <p class="text-muted small mb-2">Customer authentication is required to place dining orders. Your cart items are preserved.</p>
+                                    <button type="button" class="btn btn-sm btn-gold py-1 px-3 fw-semibold shadow-sm" onclick="fillCredentials('customer@hotel.demo', 'Customer@123', 'Customer')">
+                                        <i class="bi bi-lightning-charge-fill me-1"></i>1-Click Auto-Fill Customer Account
+                                    </button>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
@@ -135,10 +161,18 @@
     <script src="js/app.js"></script>
 
     <script>
-        // Check if user is already logged in
+        // Check if user is already logged in or redirected for ordering
         document.addEventListener('DOMContentLoaded', () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const reason = urlParams.get('reason');
+            const redirect = urlParams.get('redirect');
+
             const current = AuthService.getCurrentUser();
             if (current) {
+                if (redirect) {
+                    window.location.href = redirect;
+                    return;
+                }
                 // If user visits login while logged in, give option to continue or stay
                 const alertEl = document.getElementById('loginAlert');
                 alertEl.className = 'alert alert-info py-2 px-3 small rounded-3 mb-3 d-flex justify-content-between align-items-center';
@@ -147,6 +181,21 @@
                     <a href="dashboard.html" class="btn btn-sm btn-primary py-0">Go to Dashboard</a>
                 `;
                 alertEl.classList.remove('d-none');
+                return;
+            }
+
+            // Check if redirected because login is compulsory for ordering
+            if (reason === 'order_login' || redirect === 'checkout.html') {
+                const notice = document.getElementById('orderNoticeWrapper');
+                if (notice) notice.classList.remove('d-none');
+
+                // Auto-fill customer demo account for effortless checkout flow
+                fillCredentials('customer@hotel.demo', 'Customer@123', 'Customer');
+
+                const submitBtn = document.querySelector('#loginForm button[type="submit"]');
+                if (submitBtn) {
+                    submitBtn.innerHTML = '<i class="bi bi-shield-check me-1"></i>Sign In & Continue to Checkout';
+                }
             }
         });
 
@@ -205,6 +254,8 @@
                         window.location.href = redirect;
                     } else if (result.user.role === 'Customer') {
                         window.location.href = 'index.html';
+                    } else if (result.user.role === 'Waiter') {
+                        window.location.href = 'pos.html';
                     } else {
                         window.location.href = 'dashboard.html';
                     }

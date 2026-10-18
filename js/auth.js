@@ -16,17 +16,102 @@ const ROLE_PERMISSIONS = {
         canCreateOrders: true,
         canBookRooms: true,
         canReserveTables: true,
+        canManageActivities: true,
+        canManageFinances: true,
         allowedPages: [
             'dashboard.html',
+            'pos.html',
+            'kds.html',
             'orders.html',
             'table-booking.html',
             'room-booking.html',
             'rooms.html',
+            'activities.html',
             'staff.html',
             'inventory.html',
             'reports.html',
             'menu.html',
             'cart.html',
+            'checkout.html',
+            'profile.html'
+        ]
+    },
+    Purchase: {
+        canManageMenu: false,
+        canManageRooms: false,
+        canManageTables: false,
+        canManageStaff: false,
+        canManageOrders: true,
+        canViewReports: true,
+        canManageInventory: true,
+        canManagePurchases: true,
+        canCheckInOut: false,
+        canCreateOrders: false,
+        canBookRooms: false,
+        canReserveTables: false,
+        canManageActivities: false,
+        allowedPages: [
+            'dashboard.html',
+            'inventory.html',
+            'reports.html',
+            'orders.html',
+            'activities.html',
+            'profile.html'
+        ]
+    },
+    MD: {
+        canManageMenu: true,
+        canManageRooms: true,
+        canManageTables: true,
+        canManageStaff: true,
+        canManageOrders: true,
+        canViewReports: true,
+        canManageInventory: true,
+        canCheckInOut: true,
+        canCreateOrders: true,
+        canBookRooms: true,
+        canReserveTables: true,
+        canManageActivities: true,
+        canManageFinances: true,
+        allowedPages: [
+            'dashboard.html',
+            'reports.html',
+            'orders.html',
+            'rooms.html',
+            'room-booking.html',
+            'activities.html',
+            'table-booking.html',
+            'staff.html',
+            'inventory.html',
+            'pos.html',
+            'kds.html',
+            'menu.html',
+            'cart.html',
+            'checkout.html',
+            'profile.html'
+        ]
+    },
+    Accounts: {
+        canManageMenu: false,
+        canManageRooms: false,
+        canManageTables: false,
+        canManageStaff: false,
+        canManageOrders: true,
+        canViewReports: true,
+        canManageInventory: true,
+        canCheckInOut: false,
+        canCreateOrders: true,
+        canBookRooms: true,
+        canReserveTables: true,
+        canManageActivities: true,
+        canManageFinances: true,
+        allowedPages: [
+            'dashboard.html',
+            'reports.html',
+            'orders.html',
+            'activities.html',
+            'room-booking.html',
+            'rooms.html',
             'checkout.html',
             'profile.html'
         ]
@@ -43,12 +128,16 @@ const ROLE_PERMISSIONS = {
         canCreateOrders: true,
         canBookRooms: true,
         canReserveTables: true,
+        canManageActivities: true,
         allowedPages: [
             'dashboard.html',
+            'pos.html',
+            'kds.html',
             'orders.html',
             'table-booking.html',
             'room-booking.html',
             'rooms.html',
+            'activities.html',
             'inventory.html',
             'reports.html',
             'menu.html',
@@ -71,6 +160,7 @@ const ROLE_PERMISSIONS = {
         canReserveTables: true,
         allowedPages: [
             'dashboard.html',
+            'pos.html',
             'room-booking.html',
             'rooms.html',
             'table-booking.html',
@@ -91,6 +181,8 @@ const ROLE_PERMISSIONS = {
         canReserveTables: false,
         allowedPages: [
             'dashboard.html',
+            'pos.html',
+            'kds.html',
             'orders.html',
             'table-booking.html',
             'menu.html',
@@ -111,6 +203,7 @@ const ROLE_PERMISSIONS = {
         canCreateOrders: true,
         canBookRooms: true,
         canReserveTables: true,
+        canManageActivities: true,
         allowedPages: [
             'index.html',
             'menu.html',
@@ -119,6 +212,8 @@ const ROLE_PERMISSIONS = {
             'orders.html',
             'table-booking.html',
             'room-booking.html',
+            'rooms.html',
+            'activities.html',
             'profile.html',
             'dashboard.html'
         ]
@@ -206,9 +301,10 @@ const AuthService = {
 
         if (!user) {
             // Not logged in and accessing a private page
-            const publicPages = ['index.html', 'login.html', 'menu.html'];
+            const publicPages = ['index.html', 'login.html', 'menu.html', 'cart.html', 'rooms.html', 'activities.html', 'room-booking.html', 'table-booking.html'];
             if (!publicPages.includes(currentPage)) {
-                window.location.href = `login.html?redirect=${encodeURIComponent(currentPage)}`;
+                const reasonParam = currentPage === 'checkout.html' ? '&reason=order_login' : '';
+                window.location.href = `login.html?redirect=${encodeURIComponent(currentPage)}${reasonParam}`;
                 return false;
             }
             return true;

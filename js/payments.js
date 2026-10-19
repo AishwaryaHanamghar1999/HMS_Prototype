@@ -1,5 +1,5 @@
 /**
- * The Grand Aurelia Hotel Management System
+ * Maithili Agro Tourism — Mulshi · Pune - Hotel Management System
  * Comprehensive Payment Gateway Simulation Engine
  * Supports: Credit Card (Visa, Mastercard, Amex), Debit Card (RuPay, Maestro, Visa/MC Debit),
  * UPI / QR Code, Net Banking, and Bank 3D Secure / OTP Verification Flow.
@@ -25,9 +25,9 @@ const PaymentService = {
 
         const totalAmount = Number(paymentData.total || paymentData.totalCost || paymentData.amount || 0);
         const refId = paymentData.id || paymentData.refNumber || `PAY_${Math.floor(100000 + Math.random() * 900000)}`;
-        const email = paymentData.customerEmail || paymentData.guestEmail || 'guest@grandaurelia.com';
-        const phone = paymentData.customerPhone || paymentData.guestPhone || '+1 (555) 019-8821';
-        const title = paymentData.description || paymentData.activityName || paymentData.roomType || 'Aurelia Resort & Hospitality Charge';
+        const email = paymentData.customerEmail || paymentData.guestEmail || 'guest@maithiliagro.com';
+        const phone = paymentData.customerPhone || paymentData.guestPhone || '+91 98230 12345';
+        const title = paymentData.description || paymentData.activityName || paymentData.roomType || 'Maithili Agro Tourism Hospitality Charge';
 
         document.getElementById('pgModalAmount').textContent = App.formatCurrency(totalAmount);
         document.getElementById('pgModalRefId').textContent = refId;
@@ -57,10 +57,10 @@ const PaymentService = {
                         <div class="bg-navy-dark text-white p-4 d-flex flex-column flex-sm-row justify-content-between align-items-start align-items-sm-center border-bottom border-warning-subtle">
                             <div>
                                 <div class="d-flex align-items-center gap-2 mb-1">
-                                    <span class="badge bg-gold text-dark fw-bold px-2 py-1" style="font-size:0.7rem; letter-spacing:0.05em;">AURELIA PAY GATEWAY</span>
+                                    <span class="badge bg-gold text-dark fw-bold px-2 py-1" style="font-size:0.7rem; letter-spacing:0.05em;">MAITHILI PAY GATEWAY</span>
                                     <span class="badge bg-success-subtle text-success px-2 py-1" style="font-size:0.7rem;"><i class="bi bi-shield-lock-fill me-1"></i>256-Bit SSL Secured</span>
                                 </div>
-                                <h4 class="font-heading fw-bold text-white mb-0" id="pgOrderTitle">The Grand Aurelia Reservation</h4>
+                                <h4 class="font-heading fw-bold text-white mb-0" id="pgOrderTitle">Maithili Agro Tourism Reservation</h4>
                                 <small class="text-white-50">Ref: <span id="pgModalRefId" class="font-monospace text-gold">REF-0000</span></small>
                             </div>
                             <div class="text-sm-end mt-2 mt-sm-0">
@@ -269,7 +269,7 @@ const PaymentService = {
                                         <div class="col-12 col-sm-8 col-md-6">
                                             <div class="bg-white p-3 rounded-4 shadow-sm border d-inline-block mb-3">
                                                 <i class="bi bi-qr-code text-navy display-1"></i>
-                                                <div class="badge bg-dark text-gold mt-2 d-block py-1">hotel.aurelia@icici</div>
+                                                <div class="badge bg-dark text-gold mt-2 d-block py-1">maithiliagro@icici</div>
                                             </div>
                                             <p class="small text-muted mb-2">Scan with Google Pay, PhonePe, Paytm, or any BHIM UPI app.</p>
                                             
@@ -372,7 +372,7 @@ const PaymentService = {
 
                         <div class="modal-body p-4 bg-white">
                             <div class="text-center mb-3">
-                                <div class="badge bg-light text-navy border px-3 py-1 fs-6 mb-2">The Grand Aurelia Hotel & Resort</div>
+                                <div class="badge bg-light text-navy border px-3 py-1 fs-6 mb-2">Maithili Agro Tourism — Mulshi · Pune</div>
                                 <div class="fs-4 fw-bold text-navy" id="otpModalAmountDisplay">$0.00</div>
                                 <small class="text-muted d-block mt-1">One-Time Password (OTP) dispatched to registered mobile: <strong class="text-dark">+1 (•••) •••-8821</strong></small>
                             </div>
@@ -654,7 +654,7 @@ const PaymentService = {
         // Determine item fields
         const refId = item.id || item.refNumber;
         const guestName = item.customerName || item.guestName || 'Valued Guest';
-        const guestEmail = item.customerEmail || item.guestEmail || 'concierge@grandaurelia.com';
+        const guestEmail = item.customerEmail || item.guestEmail || 'contact@maithiliagro.com';
         const guestPhone = item.customerPhone || item.guestPhone || '+1 (555) 019-8821';
         const timestamp = item.createdAt || item.timestamp || new Date().toLocaleString();
         const payMethod = item.paymentMethod || item.method || 'Credit Card (Visa •••• 4242)';
@@ -727,10 +727,10 @@ const PaymentService = {
                     <div>
                         <div class="d-flex align-items-center gap-2 mb-1">
                             <i class="bi bi-stars text-gold fs-3"></i>
-                            <h2 class="font-heading fw-bold text-navy mb-0">${settings.hotelName || 'The Grand Aurelia Hotel & Resort'}</h2>
+                            <h2 class="font-heading fw-bold text-navy mb-0">${settings.hotelFullName || settings.hotelName || 'Maithili Agro Tourism — Mulshi · Pune'}</h2>
                         </div>
-                        <div class="text-muted small">${settings.address || '742 Royal Promenade Avenue, Coastal Bay, CA'}</div>
-                        <div class="text-muted small">Tel: ${settings.contactPhone || '+1 (800) 555-AURELIA'} | Email: ${settings.contactEmail || 'concierge@grandaurelia.com'}</div>
+                        <div class="text-muted small">${settings.address || 'Mulshi Dam Road, Mulshi, Pune, Maharashtra 412108'}</div>
+                        <div class="text-muted small">Tel: ${settings.contactPhone || '+91 98230 12345 / +91 (020) 2555-6789'} | Email: ${settings.contactEmail || 'contact@maithiliagro.com'}</div>
                         <div class="badge bg-gold-subtle text-dark border border-warning-subtle mt-2">GSTIN: 27AABCT8819Q1ZP</div>
                     </div>
                     <div class="text-end">
@@ -789,8 +789,8 @@ const PaymentService = {
 
                 <!-- Footer notice -->
                 <div class="border-top pt-3 text-center text-muted small">
-                    <p class="mb-1">Thank you for visiting <strong>${settings.hotelName}</strong>.</p>
-                    <p class="mb-0" style="font-size: 0.72rem;">Authentic Computer Generated Tax Invoice. Payment processed via Aurelia Secure Gateway.</p>
+                    <p class="mb-1">Thank you for visiting <strong>${settings.hotelFullName || settings.hotelName || 'Maithili Agro Tourism — Mulshi · Pune'}</strong>.</p>
+                    <p class="mb-0" style="font-size: 0.72rem;">Authentic Computer Generated Tax Invoice. Payment processed via Maithili Secure Gateway.</p>
                 </div>
             </div>
         `;

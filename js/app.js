@@ -1,5 +1,5 @@
 /**
- * The Grand Aurelia Hotel Management System
+ * Maithili Agro Tourism — Mulshi · Pune - Hotel Management System
  * App Core UI & Navigation Engine
  */
 
@@ -325,7 +325,7 @@ const App = {
                 <div class="d-flex align-items-center gap-2">
                     <i class="bi bi-stars text-gold fs-4"></i>
                     <div>
-                        <h6 class="offcanvas-title font-heading mb-0 text-white">The Grand Aurelia</h6>
+                        <h6 class="offcanvas-title font-heading mb-0 text-white">Maithili Agro Tourism — Mulshi · Pune</h6>
                         <small class="text-gold" style="font-size: 0.75rem;">Signed in as: ${user ? `${user.name} (${role})` : 'Guest'}</small>
                     </div>
                 </div>

@@ -1,5 +1,5 @@
 /**
- * The Grand Aurelia Hotel Management System
+ * Maithili Agro Tourism — Mulshi · Pune - Hotel Management System
  * Storage & Data Layer (Local Storage Architecture)
  */
 
@@ -203,7 +203,7 @@ const DEFAULT_DATA = {
         },
         {
             id: 'menu_8',
-            name: 'Signature Aurelia Smoked Bourbon',
+            name: 'Signature Maithili Smoked Bourbon',
             category: 'Beverages',
             price: 19.00,
             description: 'Aged reserve bourbon, orange bitters, smoked rosemary plume, and crystal ice sphere.',
@@ -289,7 +289,7 @@ const DEFAULT_DATA = {
         {
             id: 'room_201',
             number: '201',
-            type: 'Grand Aurelia Presidential Penthouse',
+            type: 'Maithili Presidential Penthouse',
             category: 'Suite',
             pricePerNight: 650,
             capacity: 4,
@@ -378,7 +378,7 @@ const DEFAULT_DATA = {
             guests: 2,
             items: [
                 { id: 'menu_3', name: 'Pan-Roasted Atlantic Salmon', price: 36.00, quantity: 1, subtotal: 36.00, notes: 'Extra crisp skin' },
-                { id: 'menu_8', name: 'Signature Aurelia Smoked Bourbon', price: 19.00, quantity: 2, subtotal: 38.00, notes: 'Sphere crystal ice' }
+                { id: 'menu_8', name: 'Signature Maithili Smoked Bourbon', price: 19.00, quantity: 2, subtotal: 38.00, notes: 'Sphere crystal ice' }
             ],
             kots: [
                 {
@@ -387,7 +387,7 @@ const DEFAULT_DATA = {
                     punchedAt: '2026-10-15 10:40',
                     items: [
                         { id: 'menu_3', name: 'Pan-Roasted Atlantic Salmon', quantity: 1, notes: 'Extra crisp skin' },
-                        { id: 'menu_8', name: 'Signature Aurelia Smoked Bourbon', quantity: 2, notes: 'Sphere crystal ice' }
+                        { id: 'menu_8', name: 'Signature Maithili Smoked Bourbon', quantity: 2, notes: 'Sphere crystal ice' }
                     ],
                     status: 'Preparing'
                 }
@@ -410,7 +410,7 @@ const DEFAULT_DATA = {
             customerPhone: '+1 (555) 019-8821',
             orderType: 'Room Delivery',
             tableNumber: 'Room 102',
-            deliveryAddress: 'Room 102, The Grand Aurelia',
+            deliveryAddress: 'Room 102, Maithili Agro Tourism',
             items: [
                 { id: 'menu_1', name: 'Truffle Glazed Wild Mushrooms', price: 18.50, quantity: 1, subtotal: 18.50 },
                 { id: 'menu_7', name: 'Gold Leaf Valrhona Chocolate Fondant', price: 16.50, quantity: 1, subtotal: 16.50 }
@@ -565,7 +565,7 @@ const DEFAULT_DATA = {
             duration: '45 Minutes',
             pricePerPerson: 350.00,
             image: 'https://images.unsplash.com/photo-1508614589041-895b88991e3e?auto=format&fit=crop&w=800&q=80',
-            description: 'Take flight from the private Aurelia Helipad. Soar above dramatic sea cliffs, turquoise lagoons, and the private archipelago with Bose noise-canceling headsets.',
+            description: 'Take flight from the private Maithili Helipad. Soar above scenic Mulshi backwaters, turquoise lake views, and lush Sahyadri hills with Bose noise-canceling headsets.',
             slots: ['10:00 AM Morning Flight', '02:00 PM Midday Vista', '05:00 PM Golden Flight'],
             maxParticipants: 4,
             inclusions: ['Helipad lounge express check-in', 'Bose aviation headset audio', 'Champagne landing toast'],
@@ -754,13 +754,13 @@ const DEFAULT_DATA = {
         },
         {
             id: 'sup_4',
-            name: 'Château Aurelia Cellars & Fine Spirits',
+            name: 'Château Maithili Cellars & Fine Spirits',
             category: 'Vintage Wines & Spirits',
             rating: 5.0,
             paymentTerms: 'Immediate / Card',
             contactName: 'Étienne Laurent',
             phone: '+1 (555) 019-2244',
-            email: 'sommelier@aureliacellars.demo',
+            email: 'sommelier@maithiliagro.demo',
             location: 'Reserve Vineyard Estate, Napa',
             leadTimeDays: 3,
             activeOrdersCount: 1,
@@ -856,7 +856,7 @@ const DEFAULT_DATA = {
         {
             id: 'PO-8804',
             supplierId: 'sup_4',
-            supplierName: 'Château Aurelia Cellars & Fine Spirits',
+            supplierName: 'Château Maithili Cellars & Fine Spirits',
             category: 'Vintage Wines & Spirits',
             items: [
                 { name: 'Dom Pérignon Vintage Champagne 2015', quantity: 24, unit: 'btls', unitPrice: 220.00, total: 5280.00 },
@@ -879,15 +879,17 @@ const DEFAULT_DATA = {
     ],
 
     settings: {
-        hotelName: 'The Grand Aurelia Hotel & Resort',
-        hotelTagline: 'Luxury Living & Michelin-Inspired Gastronomy',
+        hotelName: 'Maithili',
+        hotelFullName: 'Maithili Agro Tourism — Mulshi · Pune',
+        hotelShortName: 'Maithili',
+        hotelTagline: 'Agro Tourism, Scenic Nature & Authentic Hospitality',
         taxRatePercent: 5,
         currencySymbol: '$',
-        contactPhone: '+1 (800) 555-AURELIA',
-        contactEmail: 'concierge@grandaurelia.com',
-        address: '742 Royal Promenade Avenue, Coastal Bay, CA 90210',
+        contactPhone: '+91 98230 12345 / +91 (020) 2555-6789',
+        contactEmail: 'contact@maithiliagro.com',
+        address: 'Mulshi Dam Road, Mulshi, Pune, Maharashtra 412108',
         openingHours: '24/7 Front Desk | Restaurant: 07:00 AM – 11:30 PM',
-        razorpayDemoKey: 'rzp_test_aurelia_prototype_key'
+        razorpayDemoKey: 'rzp_test_maithili_prototype_key'
     }
 };
 
@@ -961,6 +963,22 @@ const StorageService = {
         }
         if (!localStorage.getItem(STORAGE_KEYS.SETTINGS)) {
             localStorage.setItem(STORAGE_KEYS.SETTINGS, JSON.stringify(DEFAULT_DATA.settings));
+        } else {
+            try {
+                const curSettings = JSON.parse(localStorage.getItem(STORAGE_KEYS.SETTINGS) || '{}');
+                if (!curSettings.hotelFullName || (curSettings.hotelName && (curSettings.hotelName.includes('Aurelia') || curSettings.hotelName.includes('Grand')))) {
+                    curSettings.hotelName = DEFAULT_DATA.settings.hotelName;
+                    curSettings.hotelFullName = DEFAULT_DATA.settings.hotelFullName;
+                    curSettings.hotelShortName = DEFAULT_DATA.settings.hotelShortName;
+                    curSettings.hotelTagline = DEFAULT_DATA.settings.hotelTagline;
+                    curSettings.address = DEFAULT_DATA.settings.address;
+                    curSettings.contactEmail = DEFAULT_DATA.settings.contactEmail;
+                    curSettings.contactPhone = DEFAULT_DATA.settings.contactPhone;
+                    localStorage.setItem(STORAGE_KEYS.SETTINGS, JSON.stringify(curSettings));
+                }
+            } catch (e) {
+                console.error('Error synchronizing settings:', e);
+            }
         }
     },
 

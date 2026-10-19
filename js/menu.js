@@ -1,5 +1,5 @@
 /**
- * The Grand Aurelia Hotel Management System
+ * Maithili Agro Tourism — Mulshi · Pune - Hotel Management System
  * Food Menu & Ordering Engine
  */
 

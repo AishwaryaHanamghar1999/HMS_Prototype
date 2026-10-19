@@ -1,5 +1,5 @@
 /**
- * The Grand Aurelia Hotel Management System
+ * Maithili Agro Tourism — Mulshi · Pune - Hotel Management System
  * Dynamic Role Dashboard Engine
  * Computes live operational metrics from Browser Local Storage
  */
@@ -238,7 +238,7 @@ const DashboardModule = {
             case 'MD': return 'Executive Directorate: oversee high-level profitability, RevPAR performance, luxury experience portfolios, and VIP stay approvals.';
             case 'Receptionist': return 'Manage guest concierge, front desk check-ins/check-outs, hotel suite allocations, and table bookings.';
             case 'Waiter': return 'Floor station active: monitor table occupancy, punch new dine-in tickets, and coordinate food service delivery.';
-            default: return 'Experience royal luxury at The Grand Aurelia. Order gourmet room service, book dining tables, and reserve luxury suites.';
+            default: return 'Experience serene nature and authentic hospitality at Maithili Agro Tourism — Mulshi · Pune. Order farm-fresh dining, book tables, and reserve suites.';
         }
     },
 
@@ -652,7 +652,7 @@ const DashboardModule = {
 
             <div class="bg-light p-3 rounded-3 small">
                 <strong>Procurement Audit Note:</strong>
-                <p class="mb-0 text-muted mt-1">\${po.notes || 'Goods receipt verified under Grand Aurelia procurement quality standards.'}</p>
+                <p class="mb-0 text-muted mt-1">\${po.notes || 'Goods receipt verified under Maithili Agro Tourism procurement quality standards.'}</p>
             </div>
         \`;
 
@@ -989,7 +989,7 @@ const DashboardModule = {
                                 <span class="badge bg-success text-white">0% Surcharge</span>
                             </div>
                             <div class="fs-5 fw-bold text-dark">${App.formatCurrency(m.upiTotal)}</div>
-                            <small class="text-muted">Instant IMPS / QR Settlement to Aurelia Account</small>
+                            <small class="text-muted">Instant IMPS / QR Settlement to Maithili Agro Account</small>
                         </div>
                     </div>
                 </div>
@@ -1036,7 +1036,7 @@ const DashboardModule = {
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a');
         a.href = url;
-        a.download = `Aurelia_Financial_Ledger_${new Date().toISOString().split('T')[0]}.csv`;
+        a.download = `Maithili_Financial_Ledger_${new Date().toISOString().split('T')[0]}.csv`;
         document.body.appendChild(a);
         a.click();
         document.body.removeChild(a);
@@ -1521,8 +1521,8 @@ const DashboardModule = {
                 <div class="col-12 col-lg-5">
                     <div class="card-hotel p-4 text-center">
                         <i class="bi bi-stars text-gold display-5 mb-2 d-block"></i>
-                        <h5 class="font-heading fw-bold text-navy mb-1">Aurelia Guest Concierge</h5>
-                        <p class="text-muted small mb-3">Experience bespoke luxury. Prebook private spa therapies, sunset yacht charters, or reserve ocean-facing suites with instant debit/credit card confirmation.</p>
+                        <h5 class="font-heading fw-bold text-navy mb-1">Maithili Guest Concierge</h5>
+                        <p class="text-muted small mb-3">Experience bespoke nature and tranquility. Prebook nature activities, agrotourism tours, or reserve scenic suites with instant payment confirmation.</p>
                         <div class="d-grid gap-2">
                             <a href="activities.html" class="btn btn-gold btn-sm"><i class="bi bi-compass me-1"></i>Prebook Resort Activities</a>
                             <a href="room-booking.html" class="btn btn-navy btn-sm"><i class="bi bi-door-open me-1"></i>Book Luxury Suite</a>

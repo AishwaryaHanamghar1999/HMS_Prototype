@@ -1,5 +1,5 @@
 /**
- * The Grand Aurelia Hotel Management System
+ * Maithili Agro Tourism — Mulshi · Pune - Hotel Management System
  * Restaurant Point of Sale (POS) & Dining Floor Engine
  */
 
@@ -647,9 +647,9 @@ const POSModule = {
         const content = `
             <div class="thermal-receipt">
                 <div class="text-center mb-2">
-                    <div class="fw-bold fs-6">${settings.hotelName || 'THE GRAND AURELIA'}</div>
-                    <div style="font-size:11px;">Fine Dining Restaurant & Bar</div>
-                    <div style="font-size:10px;">${settings.address || 'Coastal Bay, CA'}</div>
+                    <div class="fw-bold fs-6">${settings.hotelFullName || settings.hotelName || 'MAITHILI AGRO TOURISM'}</div>
+                    <div style="font-size:11px;">Agro Tourism & Farm Dining</div>
+                    <div style="font-size:10px;">${settings.address || 'Mulshi, Pune'}</div>
                     <div class="receipt-divider"></div>
                     <div class="fw-bold">TABLE CHECK / PROVISIONAL BILL</div>
                 </div>
@@ -799,7 +799,7 @@ const POSModule = {
                     <div class="tab-pane fade" id="settle-upi">
                         <div class="text-center py-2">
                             <div class="p-2 bg-white rounded shadow-sm d-inline-block border mb-2">
-                                <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=upi://pay?pa=aureliahotel@icici%26am=${total}%26pn=TheGrandAurelia" width="130" height="130" alt="QR Code">
+                                <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=upi://pay?pa=maithiliagro@icici%26am=${total}%26pn=MaithiliAgroTourism" width="130" height="130" alt="QR Code">
                             </div>
                             <div class="small fw-bold text-navy">Scan with Google Pay / PhonePe / Paytm</div>
                             <small class="text-muted d-block">Simulated instant QR settlement</small>

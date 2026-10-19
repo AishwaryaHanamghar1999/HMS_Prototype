@@ -1,5 +1,5 @@
 /**
- * The Grand Aurelia Hotel Management System
+ * Maithili Agro Tourism — Mulshi · Pune - Hotel Management System
  * Restaurant Table & Hotel Room Booking Engine
  */
 
@@ -152,7 +152,7 @@ const BookingsModule = {
                                     <i class="bi bi-check2"></i>
                                 </div>
                                 <h4 class="font-heading fw-bold text-navy mb-1">Reservation Confirmed!</h4>
-                                <p class="text-muted small mb-3">We look forward to welcoming you to The Grand Aurelia.</p>
+                                <p class="text-muted small mb-3">We look forward to welcoming you to Maithili Agro Tourism — Mulshi · Pune.</p>
                                 
                                 <div class="bg-light p-3 rounded-3 text-start mb-3 small">
                                     <div class="d-flex justify-content-between mb-1">

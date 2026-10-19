@@ -1,4 +1,4 @@
-# The Grand Aurelia Hotel & Resort
+# Maithili Agro Tourism — Mulshi · Pune
 ## Complete Hotel Management System (HMS) Prototype
 
 A modern, professional, fully responsive Hotel Management System prototype built with **HTML5, CSS3, Bootstrap 5.3, Bootstrap Icons, Vanilla JavaScript, and Browser Local Storage** for complete client-side data persistence.
